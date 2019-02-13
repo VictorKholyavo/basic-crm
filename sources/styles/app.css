@@ -56,3 +56,24 @@
 	font-size:20px;
 	vertical-align:middle;
 }
+
+.one {
+  display: inline-block;
+  margin-left: 40px;
+  vertical-align: top;
+}
+
+.one span, .two span {
+  text-align: left;
+  width: 200px;
+  display: block;
+  padding-top: 20px;
+}
+.photo {
+  height: 160px;
+  border: 1px solid black;
+}
+.nameOfContact {
+  font-size: 25px;
+  font-weight: bold;
+}

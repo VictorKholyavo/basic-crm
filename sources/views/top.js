@@ -4,26 +4,48 @@ import {JetView, plugins} from "webix-jet";
 
 export default class TopView extends JetView{
 	config(){
-		var header = {
-			type:"header", template:this.app.config.name, css:"webix_header app_header"
-		};
-
 		var menu = {
-			view:"menu", id:"top:menu", 
+			view:"menu", id:"top:menu",
 			css:"app_menu",
 			width:180, layout:"y", select:true,
 			template:"<span class='webix_icon #icon#'></span> #value# ",
 			data:[
-				{ value:"Dashboard", id:"start", icon:"wxi-columns" },
-				{ value:"Data",		 id:"data",  icon:"wxi-pencil" }
-			]
+				{ value: "Contacts", id:"contacts", icon:"wxi-columns" },
+				{ value: "Activities",	id:"activities", icon:"wxi-pencil" },
+				{ value: "Settings", id:"settings", icon:"webix_icon fas fa-cog"}
+			],
+			on: {
+				onAfterSelect: (id) => {
+					var name = id[0].toUpperCase() + id.slice(1);
+					this.$$("header").define({template: name});
+					this.$$("header").refresh();
+				}
+			}
+
 		};
 
 		var ui = {
-			type:"clean", paddingX:5, css:"app_layout", cols:[
-				{  paddingX:5, paddingY:10, rows: [ {css:"webix_shadow_medium", rows:[header, menu]} ]},
+			type:"clean", paddingX:5, css:"app_layout",
+			rows:[
+				{ paddingX:5,
+					paddingY:10,
+					rows: [
+						{
+							type: "header",
+							template: "#value#",
+							localId: "header"
+						},
+						{
+							css:"webix_shadow_medium",
+							cols:[
+								menu,
+								{ $subview:true }
+							]
+						}
+					]
+				},
 				{ type:"wide", paddingY:10, paddingX:5, rows:[
-					{ $subview:true } 
+
 				]}
 			]
 		};
