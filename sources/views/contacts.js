@@ -29,6 +29,11 @@ export default class StartView extends JetView {
 										}
 									},
 								},
+								{
+									view:"button",
+									localId:"addContact",
+									value: "Add contact"
+								}
 							]
 						},
 						{
@@ -43,11 +48,6 @@ export default class StartView extends JetView {
 	}
 	init(view, url){
 		this.$$("listForContacts").sync(contacts);
-		const list = this.$$("listForContacts");
-		contacts.waitData.then(() => {
-			var id = contacts.getFirstId();
-			list.select(id);
-		});
 	}
 	urlChange(view){
 		contacts.waitData.then(() => {
@@ -56,6 +56,7 @@ export default class StartView extends JetView {
 			id = id || contacts.getFirstId();
 			if (id && list.exists(id)) {
 				this.setParam("id", id, true);
+				list.select(id);
 			}
 		});
 	}

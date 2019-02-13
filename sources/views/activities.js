@@ -31,7 +31,7 @@ export default class DataView extends JetView{
 					css:"webix_shadow_medium",
 					select: true,
 					columns: [
-						{id:"State", width: 40, header: "", checkValue:"Close", uncheckValue:"Open", template:"{common.checkbox()}"},
+						{id:"State", sort:"string",width: 40, header: "", checkValue:"Close", uncheckValue:"Open", template:"{common.checkbox()}"},
 						{id:"TypeID", header:["Activity Type", {content:"selectFilter"}], collection: activitytypes,  sort:"string"},
 						{id:"DueDate", format: webix.Date.dateToStr("%d %M %Y"), sort:"date", header:["Due Date", {content:"dateRangeFilter"}], width:160 },
 						{id:"Details", header:["Details", {content:"textFilter", compare:likeCompare}], sort:"string", fillspace: true},

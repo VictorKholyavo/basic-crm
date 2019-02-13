@@ -37,7 +37,10 @@ export default class DetailedView extends JetView{
 
   }
   urlChange(view,url) {
-    contacts.waitData.then(() => {
+		webix.promise.all ([
+			contacts.waitData,
+			statuses.waitData,
+		]).then(() => {
 			var template = this.$$("detailedInfo");
 			var id = this.getParam("id", true);
 			var values = contacts.getItem(id);
@@ -49,6 +52,6 @@ export default class DetailedView extends JetView{
 				values.status;
 				template.setValues(values);
 			}
-		});
+		})
   }
 }
