@@ -122,7 +122,7 @@ export default class FormContact extends JetView {
 					click:function(){
 						if (this.getParentView().validate()){
 							const filled = this.getParentView().getValues();
-							activities.add(filled);
+							contacts.add(filled);
 							webix.message("All is correct");
 							this.getTopParentView().hide();
 						}

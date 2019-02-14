@@ -23,6 +23,11 @@ export default class DetailedView extends JetView{
 											view: "button",
 											value: "Delete",
 											width: 70,
+											click: () => {
+												var id = this.getParam("id", true);
+												console.log(id);
+												contacts.remove(id);
+											},
 										},
 										{
 											view: "button",

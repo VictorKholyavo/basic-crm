@@ -109,7 +109,6 @@ export default class ContactActivities extends JetView{
 				return datatable.filter();
 				datatable.filter(
 					function(obj){
-						console.log(id);
 						return obj.ContactID == id;
 					}
 				);

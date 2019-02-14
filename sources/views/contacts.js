@@ -1,6 +1,7 @@
 import {JetView} from "webix-jet";
 import {contacts} from "models/contacts";
 import DetailedView from "./detailes.js";
+import FormContact from "./formContact";
 
 export default class StartView extends JetView {
 	config(){
@@ -32,7 +33,10 @@ export default class StartView extends JetView {
 								{
 									view:"button",
 									localId:"addContact",
-									value: "Add contact"
+									value: "Add contact",
+									click:() => {
+										this.win2.showEmptyWindow();
+									}
 								}
 							]
 						},
@@ -48,6 +52,7 @@ export default class StartView extends JetView {
 	}
 	init(){
 		this.$$("listForContacts").sync(contacts);
+		this.win2 = this.ui(FormContact);
 	}
 	urlChange(){
 		contacts.waitData.then(() => {
