@@ -176,7 +176,7 @@ export default class FormContact extends JetView {
 		});
 		this.$$("addButton").hide();
 		this.$$("updateButton").show();
-		this.$$("formTemplate").define({template: "Edit activity"});
+		this.$$("formTemplate").define({template: "Edit contact"});
 		this.$$("formTemplate").refresh();
 		this.getRoot().show();
 	}
@@ -185,7 +185,7 @@ export default class FormContact extends JetView {
 		form.clear();
 		this.$$("updateButton").hide();
 		this.$$("addButton").show();
-		this.$$("formTemplate").define({template: "Add activity"});
+		this.$$("formTemplate").define({template: "Add new contact"});
 		this.$$("formTemplate").refresh();
 		this.getRoot().show();
 	}

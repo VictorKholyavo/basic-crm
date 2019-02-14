@@ -75,6 +75,7 @@ export default class DataView extends JetView{
 		}
 	}
 	init(){
+		activities.filter();
 		this.$$("datatable").sync(activities);
 		this.win4 = this.ui(WindowsView);
 	}

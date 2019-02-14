@@ -153,9 +153,14 @@ export default class WindowsView extends JetView {
 		this.$$("formTemplate").refresh();
 		this.getRoot().show();
 	}
-	showEmptyWindow(){
+	showEmptyWindow(id){
 		var form = this.$$("form");
 		form.clear();
+		console.log(id);
+		if (id) {
+			this.$$("contactid").setValue(id);
+			this.$$("contactid").disable()
+		}
 		this.$$("updateButton").hide();
 		this.$$("addButton").show();
 		this.$$("formTemplate").define({template: "Add activity"});

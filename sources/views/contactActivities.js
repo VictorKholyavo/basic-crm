@@ -60,7 +60,9 @@ export default class ContactActivities extends JetView{
 								label:"Add activity",
 								css: {"float": "right"},
 								click:() => {
-									this.win4.showEmptyWindow();
+									var id = this.getParam("id");
+									console.log(id);
+									this.win4.showEmptyWindow(id);
 								}
 							},
 						]
@@ -75,44 +77,42 @@ export default class ContactActivities extends JetView{
 		}
 	}
 	init(){
-		this.$$("datatable").sync(activities);
-		this.win4 = this.ui(WindowsView);
 		activities.waitData.then(() => {
-			const datatable = this.$$("datatable");
-			var id = this.getParam("id");
-			if (!id)
-				return datatable.filter();
-				datatable.filter(
-					function(obj){
-						return obj.ContactID == id;
-					}
-				);
-		});
-
-		this.on(this.app, "Filter", (data) => {
-			activities.waitData.then(() => {
-			const datatable = this.$$("datatable");
-			var id = this.getParam("id");
-				datatable.filter(
-					function(obj){
-						return obj.ContactID == id;
-					}
-				);
-  		});
+			var id = this.getParam("id")
+			activities.filter(
+				function(obj){
+					return obj.ContactID == id;
+				}
+			)
+			this.$$("datatable").sync(activities);
 		})
+
+
+		this.win4 = this.ui(WindowsView);
+		// activities.waitData.then(() => {
+		// 	const datatable = this.$$("datatable");
+		// 	var id = this.getParam("id");
+		// 	if (!id)
+		// 		return datatable.filter();
+		// 		datatable.filter(
+		// 			function(obj){
+		// 				return obj.ContactID == id;
+		// 			}
+		// 		);
+		// });
 	}
 	urlChange(){
 		activities.waitData.then(() => {
-			const datatable = this.$$("datatable");
-			var id = this.getParam("id");
-			if (!id)
-				return datatable.filter();
-				datatable.filter(
-					function(obj){
-						return obj.ContactID == id;
-					}
-				);
-		})
+		 	const datatable = this.$$("datatable");
+		 	var id = this.getParam("id");
+		 	if (!id)
+		 		return activities.filter();
+		 		activities.filter(
+		 			function(obj){
+		 				return obj.ContactID == id;
+		 			}
+		 		);
+			})
 
 	}
 }
