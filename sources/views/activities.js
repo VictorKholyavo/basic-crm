@@ -61,11 +61,7 @@ export default class DataView extends JetView{
 								}
 							);
 						},
-<<<<<<< HEAD
 						"fa-edit": () => {
-=======
-						"fa-edit": (e) => {
->>>>>>> c0f7702bc0dd8841a609064d48ee7b4d7daa6d3d
 							this.win4.showWindow();
 						},
 					},
