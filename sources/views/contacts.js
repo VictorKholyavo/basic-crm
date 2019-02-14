@@ -46,10 +46,10 @@ export default class StartView extends JetView {
 			]
 		};
 	}
-	init(view, url){
+	init(){
 		this.$$("listForContacts").sync(contacts);
 	}
-	urlChange(view){
+	urlChange(){
 		contacts.waitData.then(() => {
 			const list = this.$$("listForContacts");
 			var id = this.getParam("id");
