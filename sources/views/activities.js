@@ -46,47 +46,47 @@ export default class DataView extends JetView{
 					},
 					onClick: {
 						"wxi-trash": (e, id) => {
-								webix.confirm(
-									{
-										title:"Clear?",
-										ok:"Yes",
-										cancel:"No",
-										text:"Deleting cannot be undone. Delete?",
-										callback:function(result) {
-											if (result) {
-												activities.remove(id.row);
-												return false;
-											}
+							webix.confirm(
+								{
+									title:"Clear?",
+									ok:"Yes",
+									cancel:"No",
+									text:"Deleting cannot be undone. Delete?",
+									callback:function(result) {
+										if (result) {
+											activities.remove(id.row);
+											return false;
 										}
 									}
-								);
-							},
-							"fa-edit": (e, id) => {
-								this.win4.showWindow();
-							},
+								}
+							);
+						},
+						"fa-edit": () => {
+							this.win4.showWindow();
 						},
 					},
-				]
-			};
+				},
+			]
+		};
 		function likeCompare(value, filter){
 			value = value.toString().toLowerCase();
 			filter = filter.toString().toLowerCase();
 			return value.indexOf(filter) !== -1;
 		}
-		}
-		init(view){
-			this.$$("datatable").sync(activities);
-			this.win4 = this.ui(WindowsView);
-		}
-		urlChange(){
-			const datatable = this.$$("datatable");
-			var id = this.getParam("id");
-			id = id || activities.getFirstId();
-			activities.waitData.then(() => {
-				if (id && datatable.exists(id)) {
-					datatable.select(id);
-					this.setParam("id", id, true);
-				}
-			});
+	}
+	init(){
+		this.$$("datatable").sync(activities);
+		this.win4 = this.ui(WindowsView);
+	}
+	urlChange(){
+		const datatable = this.$$("datatable");
+		var id = this.getParam("id");
+		id = id || activities.getFirstId();
+		activities.waitData.then(() => {
+			if (id && datatable.exists(id)) {
+				datatable.select(id);
+				this.setParam("id", id, true);
+			}
+		});
 	}
 }
