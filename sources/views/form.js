@@ -97,8 +97,10 @@ export default class WindowsView extends JetView {
 							webix.message("All is correct");
 							this.getTopParentView().hide();
 						}
-						else
+						else {
 							webix.message({ type:"error", text:"Form data is invalid" });
+						}
+							this.app.callEvent("Filter");
 					}
 				},
 				{

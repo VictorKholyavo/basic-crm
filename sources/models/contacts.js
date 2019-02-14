@@ -4,6 +4,10 @@ export const contacts = new webix.DataCollection({
 	scheme: {
 		$init: function(obj){
 			obj.value = obj.FirstName + " " + obj.LastName;
+			if (obj.id) {
+				var parser = webix.Date.strToDate("%d-%m-%Y");
+				obj.StartDate = parser(obj.StartDate);
+			}
 		},
 	},
 });
