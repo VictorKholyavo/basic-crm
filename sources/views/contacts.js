@@ -13,7 +13,6 @@ export default class StartView extends JetView {
 								{
 									view:"list",
 									localId:"listForContacts",
-									editable: true,
 									type: {
 										height: 65,
 										template: "<div class='overall'><div class='title'>#FirstName# #LastName#</div><div class='year'>#Company#</div> </div>",
@@ -55,7 +54,6 @@ export default class StartView extends JetView {
 			var id = this.getParam("id");
 			id = id || contacts.getFirstId();
 			if (id && list.exists(id)) {
-				this.setParam("id", id, true);
 				list.select(id);
 			}
 		});

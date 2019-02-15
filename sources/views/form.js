@@ -5,8 +5,7 @@ import {activities} from "models/activities";
 
 export default class WindowsView extends JetView {
 	config(){
-
-		var form = {
+		const form = {
 			view:"form",
 			localId: "form",
 			borderless:true,
@@ -55,10 +54,17 @@ export default class WindowsView extends JetView {
 					view:"datepicker",
 					label:"Date",
 					labelPosition: "left",
-					name:"DueDate",
+					name:"date",
 					width: 300,
-					timepicker: true,
-					stringResult:true,
+				},
+				{
+					view:"datepicker",
+					localId: "timeF",
+					type: "time",
+					label:"Time",
+					labelPosition: "left",
+					name:"time",
+					width: 300,
 				},
 				{
 					view:"checkbox",
@@ -72,34 +78,14 @@ export default class WindowsView extends JetView {
 					localId:"updateButton",
 					value: "Save",
 					width: 100,
-					click:function(){
-						if (this.getParentView().validate()){
-							const filled = this.getParentView().getValues();
-							if(filled.id && activities.exists(filled.id)) {
-								activities.updateItem(filled.id, filled);
-							}
-							webix.message("All is correct");
-							this.getTopParentView().hide();
-						}
-						else
-							webix.message({ type:"error", text:"Form data is invalid" });
-					}
+					click:() => { this.addOrSave();}
 				},
 				{
 					view:"button",
 					localId:"addButton",
 					value: "Add",
 					width: 100,
-					click:function(){
-						if (this.getParentView().validate()){
-							const filled = this.getParentView().getValues();
-							activities.add(filled);
-							webix.message("All is correct");
-							this.getTopParentView().hide();
-						}
-						else
-							webix.message({ type:"error", text:"Form data is invalid" });
-					}
+					click: () => 	{ this.addOrSave();}
 				},
 				{
 					view:"button",
@@ -131,39 +117,85 @@ export default class WindowsView extends JetView {
 				template:"asdasdasd",
 				localId: "formTemplate"
 			},
-			body: form
+			body: form,
+			on:{
+				onHide:()=>{
+					this.$$("form").clear();
+					this.$$("form").clearValidation();
+				}
+			}
 		};
 	}
-	showWindow(){
-		var form = this.$$("form");
-		var id = this.getParam("id", true);
-		var values = activities.getItem(id);
-		webix.promise.all ([
-			activities.waitData
-		]).then(() => {
-			if (values) {
-				form.setValues(values);
+	showWindow(mode, idOfContact){
+		let form = this.$$("form");
+		let addButton = this.$$("addButton");
+		let updateButton = this.$$("updateButton");
+		let formTemplate = this.$$("formTemplate");
+		let id = this.getParam("id", true);
+		let values = activities.getItem(id);
+
+		if (mode == "add") {
+			form.clear();
+			if (idOfContact) {
+				this.$$("contactid").setValue(idOfContact);
+				this.$$("contactid").disable();
 			}
-		});
-		this.$$("addButton").hide();
-		this.$$("updateButton").show();
-		this.$$("formTemplate").define({template: "Edit activity"});
-		this.$$("formTemplate").refresh();
-		this.getRoot().show();
-	}
-	showEmptyWindow(){
-		var form = this.$$("form");
-		form.clear();
-		this.$$("updateButton").hide();
-		this.$$("addButton").show();
-		this.$$("formTemplate").define({template: "Add activity"});
-		this.$$("formTemplate").refresh();
-		this.getRoot().show();
+			updateButton.hide();
+			addButton.show();
+			formTemplate.define({template: "Add activity"});
+			formTemplate.refresh();
+			this.getRoot().show();
+		}
+		else if (mode == "edit"){
+			webix.promise.all ([
+				activities.waitData
+			]).then(() => {
+				if (values) {
+					values.date = webix.Date.copy(values.DueDate);
+					values.time = webix.Date.copy(values.DueDate);
+					form.setValues(values);
+				}
+				if (idOfContact) {
+					this.$$("contactid").setValue(idOfContact);
+					this.$$("contactid").disable();
+				}
+			});
+			addButton.hide();
+			updateButton.show();
+			formTemplate.define({template: "Edit activity"});
+			formTemplate.refresh();
+			this.getRoot().show();
+		}
 	}
 	init(){
 
 	}
 	urlChange(){
 
+	}
+	addOrSave(){
+		if (this.$$("form").validate()){
+			const filled = this.$$("form").getValues();
+			var hours = filled.time.getHours();
+			var mins = filled.time.getMinutes();
+
+			filled.DueDate = new Date(filled.date.setHours(hours, mins));
+			delete filled.date;
+			delete filled.time;
+
+			if(filled.id && activities.exists(filled.id)) {
+				activities.updateItem(filled.id, filled);
+				webix.message("All is correct");
+			}
+			else {
+				activities.add(filled);
+				webix.message("All is correct");
+
+			}
+
+			this.$$("win2").hide();
+		}
+		else
+			webix.message({ type:"error", text:"Form data is invalid" });
 	}
 }
