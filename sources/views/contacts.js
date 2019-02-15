@@ -51,7 +51,7 @@ export default class StartView extends JetView {
 	urlChange(){
 		contacts.waitData.then(() => {
 			const list = this.$$("listForContacts");
-			var id = this.getParam("id");
+			let id = this.getParam("id");
 			id = id || contacts.getFirstId();
 			if (id && list.exists(id)) {
 				list.select(id);

@@ -61,6 +61,7 @@ export default class DataView extends JetView{
 									}
 								}
 							);
+							return false;
 						},
 						"fa-edit": () => {
 							let mode = "edit";

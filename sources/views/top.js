@@ -4,7 +4,7 @@ import {JetView, plugins} from "webix-jet";
 
 export default class TopView extends JetView{
 	config(){
-		var menu = {
+		const menu = {
 			view:"menu", id:"top:menu",
 			css:"app_menu",
 			width:180, layout:"y", select:true,
@@ -16,7 +16,7 @@ export default class TopView extends JetView{
 			],
 			on: {
 				onAfterSelect: (id) => {
-					var name = id[0].toUpperCase() + id.slice(1);
+					let name = id[0].toUpperCase() + id.slice(1);
 					this.$$("header").define({template: name});
 					this.$$("header").refresh();
 				}
@@ -24,7 +24,7 @@ export default class TopView extends JetView{
 
 		};
 
-		var ui = {
+		const ui = {
 			type:"clean", paddingX:5, css:"app_layout",
 			rows:[
 				{ paddingX:5,
