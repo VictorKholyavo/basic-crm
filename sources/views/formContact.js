@@ -5,10 +5,11 @@ import {activities} from "models/activities";
 
 export default class FormContact extends JetView {
 	config(){
-		var form = {
+		return {
 			view:"form",
 			localId: "formContact",
 			borderless:true,
+			autoheight: false,
 			elements: [
 				{
 					cols: [
@@ -134,8 +135,10 @@ export default class FormContact extends JetView {
 					view:"button",
 					localId:"closeButton",
 					value: "Close",
-					click:function() {
-						this.getTopParentView().hide();
+					click:() => {
+						//this.app.show("detailes")
+						
+						this.app.callEvent("Close", []);
 					}
 				}
 
@@ -148,20 +151,7 @@ export default class FormContact extends JetView {
 			elementsConfig:{
 				labelPosition:"top",
 			}
-		};
-		return {
-			view:"window",
-			localId:"win2",
-			//position:"center",
-			//modal:true,
-			width: 700,
-			height: 700,
-			head: {
-				template:"asdasdasd",
-				localId: "formTemplate"
-			},
-			body: form
-		};
+		}
 	}
 	showWindow(){
 		var form = this.$$("formContact");
@@ -176,8 +166,8 @@ export default class FormContact extends JetView {
 		});
 		this.$$("addButton").hide();
 		this.$$("updateButton").show();
-		this.$$("formTemplate").define({template: "Edit contact"});
-		this.$$("formTemplate").refresh();
+		// this.$$("formTemplate").define({template: "Edit contact"});
+		// this.$$("formTemplate").refresh();
 		this.getRoot().show();
 	}
 	showEmptyWindow(){
@@ -185,8 +175,8 @@ export default class FormContact extends JetView {
 		form.clear();
 		this.$$("updateButton").hide();
 		this.$$("addButton").show();
-		this.$$("formTemplate").define({template: "Add new contact"});
-		this.$$("formTemplate").refresh();
+		// this.$$("formTemplate").define({template: "Add new contact"});
+		// this.$$("formTemplate").refresh();
 		this.getRoot().show();
 	}
 	init(){

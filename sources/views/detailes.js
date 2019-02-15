@@ -34,7 +34,6 @@ export default class DetailedView extends JetView{
 											value: "Edit",
 											width: 70,
 											click:() => {
-												this.win2.showWindow();
 											}
 										},
 									]
@@ -51,11 +50,10 @@ export default class DetailedView extends JetView{
           ]
 				}
 			]
-
 		};
 	}
 	init(){
-		this.win2 = this.ui(FormContact);
+	//	this.win2 = this.ui(FormContact);
 	}
 	urlChange() {
 		webix.promise.all ([

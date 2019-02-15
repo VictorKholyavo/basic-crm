@@ -26,23 +26,24 @@ export default class StartView extends JetView {
 									on:{
 										onAfterSelect: (id) => {
 											this.setParam("id", id, true);
+											//this.app.show("top/contacts/detailes")
 										}
 									},
+
 								},
 								{
 									view:"button",
 									localId:"addContact",
 									value: "Add contact",
 									click:() => {
-										this.win2.showEmptyWindow();
+										this.show("formContact");
+
 									}
 								}
 							]
 						},
 						{
-							rows: [
-								DetailedView
-							]
+							$subview: true
 						}
 					]
 				}
@@ -51,7 +52,11 @@ export default class StartView extends JetView {
 	}
 	init(){
 		this.$$("listForContacts").sync(contacts);
-		this.win2 = this.ui(FormContact);
+		const list = this.$$("listForContacts");
+		this.on(this.app, "Close", () => {
+				this.show("detailes")
+			}
+    );
 	}
 	urlChange(){
 		contacts.waitData.then(() => {

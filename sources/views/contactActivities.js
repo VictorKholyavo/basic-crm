@@ -86,13 +86,13 @@ export default class ContactActivities extends JetView{
 			)
 			this.$$("datatable").sync(activities);
 		})
-
 		this.win4 = this.ui(WindowsView);
 	}
 	urlChange(){
 		activities.waitData.then(() => {
 		 	const datatable = this.$$("datatable");
-		 	var id = this.getParam("id");
+		 	let id = this.getParam("id");
+			console.log(id);
 		 	if (!id)
 		 		return activities.filter();
 		 		activities.filter(
