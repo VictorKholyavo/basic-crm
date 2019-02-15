@@ -41,9 +41,9 @@ export default class ContactActivities extends JetView{
 
 						},
 						"fa-edit": () => {
-							this.win4.showWindow();
-							const values = this.getParam("id");
-							this.app.callEvent("Filter", [values]);
+							let mode = "edit";
+							let idOfContact = this.getParam("id");
+							this.win4.showWindow(mode, idOfContact);
 						},
 					},
 				},
@@ -60,9 +60,9 @@ export default class ContactActivities extends JetView{
 								label:"Add activity",
 								css: {"float": "right"},
 								click:() => {
-									var id = this.getParam("id");
-									console.log(id);
-									this.win4.showEmptyWindow(id);
+									let mode = "add";
+									let idOfContact = this.getParam("id");
+									this.win4.showWindow(mode, idOfContact);
 								}
 							},
 						]
@@ -87,19 +87,7 @@ export default class ContactActivities extends JetView{
 			this.$$("datatable").sync(activities);
 		})
 
-
 		this.win4 = this.ui(WindowsView);
-		// activities.waitData.then(() => {
-		// 	const datatable = this.$$("datatable");
-		// 	var id = this.getParam("id");
-		// 	if (!id)
-		// 		return datatable.filter();
-		// 		datatable.filter(
-		// 			function(obj){
-		// 				return obj.ContactID == id;
-		// 			}
-		// 		);
-		// });
 	}
 	urlChange(){
 		activities.waitData.then(() => {

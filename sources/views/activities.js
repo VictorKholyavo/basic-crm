@@ -20,7 +20,8 @@ export default class DataView extends JetView{
 							label:"Add activity",
 							css: {"float": "right"},
 							click:() => {
-								this.win4.showEmptyWindow();
+								let mode = "add";
+								this.win4.showWindow(mode);
 							}
 						},
 					]
@@ -62,7 +63,8 @@ export default class DataView extends JetView{
 							);
 						},
 						"fa-edit": () => {
-							this.win4.showWindow();
+							let mode = "edit";
+							this.win4.showWindow(mode);
 						},
 					},
 				},
@@ -81,7 +83,7 @@ export default class DataView extends JetView{
 	}
 	urlChange(){
 		const datatable = this.$$("datatable");
-		var id = this.getParam("id");
+		let id = this.getParam("id");
 		id = id || activities.getFirstId();
 		activities.waitData.then(() => {
 			if (id && datatable.exists(id)) {

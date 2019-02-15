@@ -5,8 +5,7 @@ import {activities} from "models/activities";
 
 export default class WindowsView extends JetView {
 	config(){
-
-		var form = {
+		const form = {
 			view:"form",
 			localId: "form",
 			borderless:true,
@@ -72,17 +71,9 @@ export default class WindowsView extends JetView {
 					localId:"updateButton",
 					value: "Save",
 					width: 100,
-					click:function(){
-						if (this.getParentView().validate()){
-							const filled = this.getParentView().getValues();
-							if(filled.id && activities.exists(filled.id)) {
-								activities.updateItem(filled.id, filled);
-							}
-							webix.message("All is correct");
-							this.getTopParentView().hide();
-						}
-						else
-							webix.message({ type:"error", text:"Form data is invalid" });
+					click:() => {
+						const id = this.getParam("id", true)
+						this.app.callEvent("addOrSave", [id]);
 					}
 				},
 				{
@@ -90,17 +81,8 @@ export default class WindowsView extends JetView {
 					localId:"addButton",
 					value: "Add",
 					width: 100,
-					click:function(){
-						if (this.getParentView().validate()){
-							const filled = this.getParentView().getValues();
-							activities.add(filled);
-							webix.message("All is correct");
-							this.getTopParentView().hide();
-						}
-						else {
-							webix.message({ type:"error", text:"Form data is invalid" });
-						}
-							this.app.callEvent("Filter");
+					click: () => {
+						this.app.callEvent("addOrSave");
 					}
 				},
 				{
@@ -136,39 +118,71 @@ export default class WindowsView extends JetView {
 			body: form
 		};
 	}
-	showWindow(){
-		var form = this.$$("form");
-		var id = this.getParam("id", true);
-		var values = activities.getItem(id);
-		webix.promise.all ([
-			activities.waitData
-		]).then(() => {
-			if (values) {
-				form.setValues(values);
+
+	showWindow(mode, idOfContact){
+		let form = this.$$("form");
+		let id = this.getParam("id", true);
+		let values = activities.getItem(id);
+
+		if (mode == "add") {
+			form.clear();
+			if (idOfContact) {
+				this.$$("contactid").setValue(idOfContact);
+				this.$$("contactid").disable()
 			}
-		});
-		this.$$("addButton").hide();
-		this.$$("updateButton").show();
-		this.$$("formTemplate").define({template: "Edit activity"});
-		this.$$("formTemplate").refresh();
-		this.getRoot().show();
+			this.$$("updateButton").hide();
+			this.$$("addButton").show();
+			this.$$("formTemplate").define({template: "Add activity"});
+			this.$$("formTemplate").refresh();
+			this.getRoot().show();
+		}
+		else if (mode == "edit"){
+			webix.promise.all ([
+				activities.waitData
+			]).then(() => {
+				if (values) {
+					form.setValues(values);
+				}
+				if (idOfContact) {
+					this.$$("contactid").setValue(idOfContact);
+					this.$$("contactid").disable()
+				}
+			});
+			this.$$("addButton").hide();
+			this.$$("updateButton").show();
+			this.$$("formTemplate").define({template: "Edit activity"});
+			this.$$("formTemplate").refresh();
+			this.getRoot().show();
+		}
+
 	}
 	showEmptyWindow(id){
-		var form = this.$$("form");
-		form.clear();
-		console.log(id);
-		if (id) {
-			this.$$("contactid").setValue(id);
-			this.$$("contactid").disable()
-		}
-		this.$$("updateButton").hide();
-		this.$$("addButton").show();
-		this.$$("formTemplate").define({template: "Add activity"});
-		this.$$("formTemplate").refresh();
-		this.getRoot().show();
+		let form = this.$$("form");
+
 	}
 	init(){
+		this.on(this.app, "addOrSave", (data) => {
+			if (this.$$("form").validate()){
+				const filled = this.$$("form").getValues();
+				if(filled.id && activities.exists(filled.id)) {
+					activities.updateItem(filled.id, filled);
+					webix.message("All is correct");
+					this.$$("form").clear();
+					this.$$("form").clearValidation();
+					this.$$("win2").hide();
+				}
+				else {
+					activities.add(filled);
+					webix.message("All is correct");
+					this.$$("form").clear();
+					this.$$("form").clearValidation();
+					this.$$("win2").hide();
+				}
 
+			}
+			else
+				webix.message({ type:"error", text:"Form data is invalid" });
+		});
 	}
 	urlChange(){
 
