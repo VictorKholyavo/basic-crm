@@ -146,6 +146,8 @@ export default class WindowsView extends JetView {
 				activities.waitData
 			]).then(() => {
 				if (values) {
+					values.date = webix.Date.copy(values.DueDate);
+					values.time = webix.Date.copy(values.DueDate);
 					form.setValues(values);
 				}
 				if (idOfContact) {
