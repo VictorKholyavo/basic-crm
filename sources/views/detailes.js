@@ -68,9 +68,14 @@ export default class DetailedView extends JetView{
 				this.setParam("id", id, true);
 			}
 			let values = webix.copy(contacts.getItem(id));
-			if (values && values.StatusID && statuses.getItem(values.StatusID).Value) {
-					values.status = statuses.getItem(values.StatusID).Value;
-					template.parse(values);
+			if (values) {
+				if (values && values.StatusID && statuses.getItem(values.StatusID).Value) {
+						values.status = statuses.getItem(values.StatusID).Value;
+				}
+				else {
+					values.status = "data is not available"
+				}
+				template.parse(values);
 			}
 		});
 	}

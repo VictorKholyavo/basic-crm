@@ -64,7 +64,9 @@ export default class StartView extends JetView {
 			id = id || contacts.getFirstId();
 			if (id && list.exists(id)) {
 				list.select(id);
+
 			}
+			// this.show("detailes");
 		});
 	}
 }

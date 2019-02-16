@@ -125,7 +125,8 @@ export default class FormContact extends JetView {
 							const filled = this.getParentView().getValues();
 							contacts.add(filled);
 							webix.message("All is correct");
-							this.getTopParentView().hide();
+							this.hide()
+							this.show("detailes")
 						}
 						else
 							webix.message({ type:"error", text:"Form data is invalid" });
@@ -136,12 +137,9 @@ export default class FormContact extends JetView {
 					localId:"closeButton",
 					value: "Close",
 					click:() => {
-						//this.app.show("detailes")
-						
 						this.app.callEvent("Close", []);
 					}
 				}
-
 			],
 			rules:{
 				// Details: webix.rules.isNotEmpty,
