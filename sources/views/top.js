@@ -15,7 +15,7 @@ export default class TopView extends JetView{
 				{ value: "Settings", id:"settings", icon:"webix_icon fas fa-cog"}
 			],
 			on: {
-				onAfterSelect: function(id) => {
+				onAfterSelect: (id) => {
 					let name = id[0].toUpperCase() + id.slice(1);
 					this.$$("header").define({template: name});
 					this.$$("header").refresh();
