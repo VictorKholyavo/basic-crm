@@ -20,8 +20,8 @@ export default class DataView extends JetView{
 							label:"Add activity",
 							css: {"float": "right"},
 							click:() => {
-								let mode = "add";
-								this.win4.showWindow(mode,"");
+								//let mode = "add";
+								this.win4.showWindow("add");
 							}
 						},
 					]
@@ -64,9 +64,7 @@ export default class DataView extends JetView{
 							return false;
 						},
 						"fa-edit": () => {
-							let mode = "edit";
-							this.win4.showWindow(mode);
-							this.app.callEvent("refresh");
+							this.win4.showWindow("edit");
 						},
 					},
 				},
@@ -81,9 +79,6 @@ export default class DataView extends JetView{
 	init(){
 		this.$$("datatable").sync(activities);
 		this.win4 = this.ui(WindowsView);
-		this.on(this.app, "refresh", () => {
-			this.$$("datatable").refresh();
-		});
 	}
 	urlChange(){
 		const datatable = this.$$("datatable");

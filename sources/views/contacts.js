@@ -17,7 +17,6 @@ export default class StartView extends JetView {
 										height: 65,
 										template: "<div class='overall'><div class='title'>#FirstName# #LastName#</div><div class='year'>#Company#</div> </div>",
 									},
-									autoConfig:true,
 									width: 400,
 									select: true,
 									borderless: true,

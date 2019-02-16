@@ -114,7 +114,7 @@ export default class WindowsView extends JetView {
 			position:"center",
 			modal:true,
 			head: {
-				template:"asdasdasd",
+				template:" ",
 				localId: "formTemplate"
 			},
 			body: form,
@@ -135,7 +135,6 @@ export default class WindowsView extends JetView {
 		let values = activities.getItem(id);
 
 		if (mode == "add") {
-			form.clear();
 			if (idOfContact) {
 				this.$$("contactid").setValue(idOfContact);
 				this.$$("contactid").disable();
@@ -143,8 +142,6 @@ export default class WindowsView extends JetView {
 			updateButton.hide();
 			addButton.show();
 			formTemplate.define({template: "Add activity"});
-			formTemplate.refresh();
-			this.getRoot().show();
 		}
 		else if (mode == "edit"){
 			webix.promise.all ([
@@ -163,9 +160,9 @@ export default class WindowsView extends JetView {
 			addButton.hide();
 			updateButton.show();
 			formTemplate.define({template: "Edit activity"});
-			formTemplate.refresh();
-			this.getRoot().show();
 		}
+		formTemplate.refresh();
+		this.getRoot().show();
 	}
 	init(){
 
@@ -183,16 +180,13 @@ export default class WindowsView extends JetView {
 			delete filled.date;
 			delete filled.time;
 
-			if(filled.id && activities.exists(filled.id)) {
+			if(filled.id) {
 				activities.updateItem(filled.id, filled);
-				webix.message("All is correct");
 			}
 			else {
 				activities.add(filled);
-				webix.message("All is correct");
-
 			}
-
+			webix.message("All is correct");
 			this.$$("win2").hide();
 		}
 		else

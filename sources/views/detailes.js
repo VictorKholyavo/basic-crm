@@ -42,13 +42,16 @@ export default class DetailedView extends JetView{
 			statuses.waitData,
 		]).then(() => {
 			let id = this.getParam("id", true);
+			let template = this.$$("detailedInfo");
+			id = id || contacts.getFirstId();
+			if (!contacts.exists(id)) {
+				id = contacts.getFirstId();
+				this.setParam("id", id, true);
+			}
 			let values = webix.copy(contacts.getItem(id));
-			if (values) {
-				let template = this.$$("detailedInfo");
-				let item = contacts.getItem(id);
-				item.status = statuses.getItem(item.StatusID).Value;
-				template.parse(item);
-				template.setValues(values);
+			if (values && values.StatusID && statuses.getItem(values.StatusID).Value) {
+					values.status = statuses.getItem(values.StatusID).Value;
+					template.parse(values);
 			}
 		});
 	}
