@@ -20,8 +20,7 @@ export default class DataView extends JetView{
 							label:"Add activity",
 							css: {"float": "right"},
 							click:() => {
-								let mode = "add";
-								this.win4.showWindow(mode);
+								this.win4.showWindow("add");
 							}
 						},
 					]
@@ -63,8 +62,7 @@ export default class DataView extends JetView{
 							);
 						},
 						"fa-edit": () => {
-							let mode = "edit";
-							this.win4.showWindow(mode);
+							this.win4.showWindow("edit");
 						},
 					},
 				},

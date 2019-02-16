@@ -37,7 +37,6 @@ export default class StartView extends JetView {
 									value: "Add contact",
 									click:() => {
 										this.show("formContact");
-
 									}
 								}
 							]
