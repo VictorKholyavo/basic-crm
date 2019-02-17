@@ -126,7 +126,7 @@ export default class WindowsView extends JetView {
 			}
 		};
 	}
-	showWindow(mode, idOfContact){
+	showWindow(mode){
 		let form = this.$$("form");
 		let addButton = this.$$("addButton");
 		let updateButton = this.$$("updateButton");
@@ -135,10 +135,6 @@ export default class WindowsView extends JetView {
 		let values = activities.getItem(id);
 
 		if (mode == "add") {
-			if (idOfContact) {
-				this.$$("contactid").setValue(idOfContact);
-				this.$$("contactid").disable();
-			}
 			updateButton.hide();
 			addButton.show();
 			formTemplate.define({template: "Add activity"});
@@ -151,10 +147,6 @@ export default class WindowsView extends JetView {
 					values.date = webix.Date.copy(values.DueDate);
 					values.time = webix.Date.copy(values.DueDate);
 					form.setValues(values);
-				}
-				if (idOfContact) {
-					this.$$("contactid").setValue(idOfContact);
-					this.$$("contactid").disable();
 				}
 			});
 			addButton.hide();

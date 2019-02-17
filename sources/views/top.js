@@ -16,9 +16,9 @@ export default class TopView extends JetView{
 			],
 			on: {
 				onAfterSelect: (id) => {
-					let name = id[0].toUpperCase() + id.slice(1);
-					this.$$("header").define({template: name});
-					this.$$("header").refresh();
+					const header = this.$scope("header");
+					header.define({ template: this.getItem(id).value });
+					header.refresh();
 				}
 			}
 
