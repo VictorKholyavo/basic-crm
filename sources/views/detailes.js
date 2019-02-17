@@ -24,9 +24,9 @@ export default class DetailedView extends JetView{
 											value: "Delete",
 											width: 70,
 											click: () => {
-												var id = this.getParam("id", true);
-												console.log(id);
+												let id = this.getParam("id", true);
 												contacts.remove(id);
+												this.app.callEvent("Close", []);
 											},
 										},
 										{
@@ -34,6 +34,9 @@ export default class DetailedView extends JetView{
 											value: "Edit",
 											width: 70,
 											click:() => {
+												this.show("formContact").then(
+													this.app.callEvent("fillTheForm", [])
+												);
 											}
 										},
 									]
@@ -62,18 +65,13 @@ export default class DetailedView extends JetView{
 		]).then(() => {
 			let id = this.getParam("id", true);
 			let template = this.$$("detailedInfo");
-			id = id || contacts.getFirstId();
-			if (!contacts.exists(id)) {
-				id = contacts.getFirstId();
-				this.setParam("id", id, true);
-			}
 			let values = webix.copy(contacts.getItem(id));
 			if (values) {
 				if (values && values.StatusID && statuses.getItem(values.StatusID).Value) {
 						values.status = statuses.getItem(values.StatusID).Value;
 				}
 				else {
-					values.status = "data is not available"
+					values.status = "Not available"
 				}
 				template.parse(values);
 			}

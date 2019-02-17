@@ -79,7 +79,6 @@ export default class ContactActivities extends JetView{
 	init(){
 		activities.waitData.then(() => {
 			let id = this.getParam("id", true)
-			console.log(id);
 			activities.filter(
 				function(obj){
 					return obj.ContactID == id;
@@ -93,7 +92,6 @@ export default class ContactActivities extends JetView{
 		activities.waitData.then(() => {
 		 	const datatable = this.$$("datatable");
 		 	let id = this.getParam("id", true);
-			console.log(id);
 		 	if (!id)
 		 		return activities.filter();
 		 		activities.filter(

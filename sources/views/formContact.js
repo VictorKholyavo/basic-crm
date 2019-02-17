@@ -120,16 +120,9 @@ export default class FormContact extends JetView {
 					view:"button",
 					localId:"addButton",
 					value: "Add",
-					click:function(){
-						if (this.getParentView().validate()){
-							const filled = this.getParentView().getValues();
-							contacts.add(filled);
-							webix.message("All is correct");
-							this.hide()
-							this.show("detailes")
-						}
-						else
-							webix.message({ type:"error", text:"Form data is invalid" });
+					click: () => 	{
+						this.addOrSave();
+
 					}
 				},
 				{
@@ -178,9 +171,22 @@ export default class FormContact extends JetView {
 		this.getRoot().show();
 	}
 	init(){
-
+		this.on(this.app, "fillTheForm", () => {
+			console.log('fill');
+		});
 	}
 	urlChange(){
 
+	}
+	addOrSave(){
+		if (this.$$("formContact").validate()){
+			const filled = this.$$("formContact").getValues();
+			contacts.add(filled);
+			webix.message("All is correct");
+		}
+		else {
+			webix.message({ type:"error", text:"Form data is invalid" });
+		}
+		this.app.callEvent("Close", []);
 	}
 }
