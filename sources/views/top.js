@@ -6,6 +6,7 @@ export default class TopView extends JetView{
 	config(){
 		const menu = {
 			view:"menu", id:"top:menu",
+			localId:"menu",
 			css:"app_menu",
 			width:180, layout:"y", select:true,
 			template:"<span class='webix_icon #icon#'></span> #value# ",
@@ -16,12 +17,12 @@ export default class TopView extends JetView{
 			],
 			on: {
 				onAfterSelect: (id) => {
-					const header = this.$scope("header");
-					header.define({ template: this.getItem(id).value });
+					const header = this.$$("header");
+					const menu = this.$$("menu");
+					header.define({ template: menu.getItem(id).value });
 					header.refresh();
 				}
 			}
-
 		};
 
 		const ui = {
