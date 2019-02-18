@@ -3,6 +3,7 @@ import {contacts} from "models/contacts";
 import {statuses} from "models/statuses";
 import FormContact from "./formContact";
 import ContactActivities from "./contactActivities";
+import FileTable from "./filesofContacts"
 
 export default class DetailedView extends JetView{
 	config(){
@@ -13,7 +14,7 @@ export default class DetailedView extends JetView{
 						{
 							view:"template",
 							localId: "detailedInfo",
-							template: "<div class='one'><span class='nameOfContact'>#FirstName# #LastName#<span><span class='photo'>#Photo#</span><span>#status#</span></div><div class='one'><span></span><span></span><span class='webix_icon fas fa-envelope'> #Email#</span> <span class='webix_icon fab fa-skype'> #Skype#</span> <span class='webix_icon fas fa-tag'> #Job#</span> <span class='webix_icon fas fa-briefcase'> #Company#</span></div> <div class='one'><span></span><span></span><span class='webix_icon far fa-calendar-alt'> #Birthday#</span><span class='webix-icon fas fa-map-marker-alt'> #Address#</span></div>",
+							template: "<div class='one'><span class='nameOfContact'>#FirstName# #LastName#<span><span><img  class='photo' src='#Photo#'></span><span>#status#</span></div><div class='one'><span></span><span></span><span class='webix_icon fas fa-envelope'> #Email#</span> <span class='webix_icon fab fa-skype'> #Skype#</span> <span class='webix_icon fas fa-tag'> #Job#</span> <span class='webix_icon fas fa-briefcase'> #Company#</span></div> <div class='one'><span></span><span></span><span class='webix_icon far fa-calendar-alt'> #Birthday#</span><span class='webix-icon fas fa-map-marker-alt'> #Address#</span></div>",
 						},
 						{
 							rows: [
@@ -26,7 +27,6 @@ export default class DetailedView extends JetView{
 											click: () => {
 												let id = this.getParam("id", true);
 												contacts.remove(id);
-												this.app.callEvent("Close", []);
 											},
 										},
 										{
@@ -34,9 +34,7 @@ export default class DetailedView extends JetView{
 											value: "Edit",
 											width: 70,
 											click:() => {
-												this.show("formContact").then(
-													this.app.callEvent("fillTheForm", [])
-												);
+												this.show("formContact?mode=edit")
 											}
 										},
 									]
@@ -49,14 +47,14 @@ export default class DetailedView extends JetView{
 				{
 					 view:"tabview", localId:"tabs", cells:[
               { header:"Activities", body: ContactActivities  },
-              { header:"Files" }
+              { header:"Files", body: FileTable}
           ]
 				}
 			]
 		};
 	}
 	init(){
-	//	this.win2 = this.ui(FormContact);
+
 	}
 	urlChange() {
 		webix.promise.all ([

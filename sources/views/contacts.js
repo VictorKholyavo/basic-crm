@@ -1,5 +1,6 @@
 import {JetView} from "webix-jet";
 import {contacts} from "models/contacts";
+import {statuses} from "models/statuses";
 import DetailedView from "./detailes.js";
 import FormContact from "./formContact";
 
@@ -16,7 +17,7 @@ export default class StartView extends JetView {
 									localId:"listForContacts",
 									type: {
 										height: 65,
-										template: "<div class='overall'><div class='title'>#FirstName# #LastName#</div><div class='year'>#Company#</div> </div>",
+										template: "<div class='list'><img src='#Photo#' class='photo_icon'></div><div class='overall list'><div class='title list'>#FirstName# #LastName#</div><div class='year'>#Company#</div> </div>",
 									},
 									autoConfig:true,
 									width: 400,
@@ -26,6 +27,7 @@ export default class StartView extends JetView {
 									on:{
 										onAfterSelect: (id) => {
 											this.setParam("id", id, true);
+
 										}
 									},
 
@@ -34,8 +36,9 @@ export default class StartView extends JetView {
 									view:"button",
 									localId:"addContact",
 									value: "Add contact",
-									click:() => {
+									click: () => {
 										this.show("formContact");
+										this.$$("listForContacts").disable();
 									}
 								}
 							]
@@ -54,21 +57,18 @@ export default class StartView extends JetView {
 		const list = this.$$("listForContacts");
 		this.on(this.app, "Close", () => {
 			this.show("detailes");
+			this.$$("listForContacts").enable();
 		});
 	}
 	urlChange(){
 		contacts.waitData.then(() => {
 			const list = this.$$("listForContacts");
-			var id = this.getParam("id");
-			id = id || contacts.getFirstId();
-			if (id && list.exists(id)) {
-				list.select(id);
-			}
-			if (!contacts.exists(id)) {
+			let id = this.getParam("id");
+			if (!id && !contacts.exists(id)) {
 				id = contacts.getFirstId();
 				this.setParam("id", id, true);
 			}
-			// this.show("detailes");
+			list.select(id);
 		});
 	}
 }

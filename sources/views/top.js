@@ -5,23 +5,25 @@ import {JetView, plugins} from "webix-jet";
 export default class TopView extends JetView{
 	config(){
 		var menu = {
-			view:"menu", id:"top:menu",
+			view:"menu",
+			id:"top:menu",
+			localId: "menu",
 			css:"app_menu",
 			width:180, layout:"y", select:true,
 			template:"<span class='webix_icon #icon#'></span> #value# ",
 			data:[
-				{ value: "Contacts", id:"contacts", icon:"wxi-columns" },
+				{ value: "Contacts", id:"contacts/detailes", icon:"wxi-columns" },
 				{ value: "Activities",	id:"activities", icon:"wxi-pencil" },
 				{ value: "Settings", id:"settings", icon:"webix_icon fas fa-cog"}
 			],
 			on: {
 				onAfterSelect: (id) => {
-					var name = id[0].toUpperCase() + id.slice(1);
-					this.$$("header").define({template: name});
-					this.$$("header").refresh();
+					const header = this.$$("header");
+					const menu = this.$$("menu");
+					header.define({ template: menu.getItem(id).value });
+					header.refresh();
 				}
 			}
-
 		};
 
 		var ui = {

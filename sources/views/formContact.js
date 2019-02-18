@@ -95,6 +95,62 @@ export default class FormContact extends JetView {
 									name:"Birthday",
 									labelPosition: "left",
 								},
+								{
+									cols: [
+										{
+											rows: [
+												{
+													view: "template",
+													localId: "photo",
+													name: "Photo",
+													template: "<img class='photo' src='#src#'>"
+												},
+												{
+
+												},
+												{
+
+												}
+											]
+										},
+										{
+											rows: [
+												{
+													view:"uploader",
+													localId:"changePhoto",
+													value:"Change Photo",
+													autosend: false,
+													on: {
+														onBeforeFileAdd: (upload) => {
+															var file = upload.file;
+															var reader = new FileReader();
+															reader.onload = (event) => {
+																const values = this.$$("formContact").getValues();
+																values.Photo = event.target.result;
+																this.$$("photo").setValues({src: event.target.result});
+																this.$$("formContact").setValues(values)
+															};
+															reader.readAsDataURL(file)
+															return false;
+														}
+													}
+
+												},
+												{
+													view:"button",
+													localId:"deletePhoto",
+													value: "Delete Photo",
+													click:() => {
+
+													}
+												},
+												{
+													view: "spacer"
+												}
+											]
+										}
+									]
+								},
 							]
 						}
 					]
@@ -103,17 +159,8 @@ export default class FormContact extends JetView {
 					view:"button",
 					localId:"updateButton",
 					value: "Save",
-					click:function(){
-						if (this.getParentView().validate()){
-							const filled = this.getParentView().getValues();
-							if(filled.id && contacts.exists(filled.id)) {
-								contacts.updateItem(filled.id, filled);
-							}
-							webix.message("All is correct");
-							this.getTopParentView().hide();
-						}
-						else
-							webix.message({ type:"error", text:"Form data is invalid" });
+					click:() => {
+						this.addOrSave();
 					}
 				},
 				{
@@ -122,7 +169,6 @@ export default class FormContact extends JetView {
 					value: "Add",
 					click: () => 	{
 						this.addOrSave();
-
 					}
 				},
 				{
@@ -144,44 +190,44 @@ export default class FormContact extends JetView {
 			}
 		}
 	}
-	showWindow(){
-		var form = this.$$("formContact");
-		var id = this.getParam("id", true);
-		var values = contacts.getItem(id);
-		webix.promise.all ([
-			contacts.waitData
-		]).then(() => {
-			if (values) {
-				form.setValues(values);
-			}
-		});
-		this.$$("addButton").hide();
-		this.$$("updateButton").show();
-		// this.$$("formTemplate").define({template: "Edit contact"});
-		// this.$$("formTemplate").refresh();
-		this.getRoot().show();
-	}
-	showEmptyWindow(){
-		var form = this.$$("formContact");
-		form.clear();
-		this.$$("updateButton").hide();
-		this.$$("addButton").show();
-		// this.$$("formTemplate").define({template: "Add new contact"});
-		// this.$$("formTemplate").refresh();
-		this.getRoot().show();
-	}
 	init(){
-		this.on(this.app, "fillTheForm", () => {
-			console.log('fill');
-		});
-	}
-	urlChange(){
 
+	}
+	urlChange(view, url){
+		var id = this.getParam("id", true );
+		if(url[0].params.mode) {
+			var form = this.$$("formContact");
+			var values = contacts.getItem(id);
+			this.$$("addButton").hide();
+			webix.promise.all ([
+				contacts.waitData
+			]).then(() => {
+				if (values) {
+					form.setValues(values);
+				}
+			});
+		}
+		else {
+			this.$$("updateButton").hide();
+		}
+	}
+	changePhoto (photo) {
+		let id = this.getParam("id", true);
+		const filled = this.$$("formContact").getValues();
+		console.log(id);
+		contacts.updateItem(filled.id, photo)
 	}
 	addOrSave(){
 		if (this.$$("formContact").validate()){
+
 			const filled = this.$$("formContact").getValues();
-			contacts.add(filled);
+			if(filled.id) {
+				console.log(filled);
+				contacts.updateItem(filled.id, filled);
+			}
+			else {
+				contacts.add(filled);
+			}
 			webix.message("All is correct");
 		}
 		else {

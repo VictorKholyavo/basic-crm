@@ -119,7 +119,7 @@ export default class WindowsView extends JetView {
 			},
 			body: form,
 			on:{
-				onHide:()=>{
+				onHide:() => {
 					this.$$("form").clear();
 					this.$$("form").clearValidation();
 				}
@@ -129,17 +129,21 @@ export default class WindowsView extends JetView {
 
 	showWindow(mode, idOfContact){
 		let form = this.$$("form");
+		let addButton = this.$$("addButton");
+		let updateButton = this.$$("updateButton");
+		let formTemplate = this.$$("formTemplate");
 		let id = this.getParam("id", true);
 		let values = activities.getItem(id);
 
+		if (idOfContact) {
+			this.$$("contactid").setValue(idOfContact);
+			this.$$("contactid").disable()
+		}
 		if (mode == "add") {
-			if (idOfContact) {
-				this.$$("contactid").setValue(idOfContact);
-				this.$$("contactid").disable()
-			}
-			this.$$("updateButton").hide();
-			this.$$("addButton").show();
-			this.$$("formTemplate").define({template: "Add activity"});
+
+			updateButton.hide();
+			addButton.show();
+			formTemplate.define({template: "Add activity"});
 		}
 		else if (mode == "edit"){
 			webix.promise.all ([
@@ -155,11 +159,11 @@ export default class WindowsView extends JetView {
 					this.$$("contactid").disable()
 				}
 			});
-			this.$$("addButton").hide();
-			this.$$("updateButton").show();
-			this.$$("formTemplate").define({template: "Edit activity"});
+			addButton.hide();
+			updateButton.show();
+			formTemplate.define({template: "Edit activity"});
 		}
-		this.$$("formTemplate").refresh();
+		formTemplate.refresh();
 		this.getRoot().show();
 	}
 	init(){
@@ -173,8 +177,7 @@ export default class WindowsView extends JetView {
 			const filled = this.$$("form").getValues();
 			let hours = filled.time.getHours();
 			let mins = filled.time.getMinutes();
-			console.log(hours);
-			console.log(filled.date);
+
 			filled.DueDate = new Date(filled.date.setHours(hours, mins));
 			delete filled.date;
 			delete filled.time;

@@ -42,7 +42,7 @@ export default class ContactActivities extends JetView{
 						},
 						"fa-edit": () => {
 							let mode = "edit";
-							let idOfContact = this.getParam("id");
+							let idOfContact = this.getParam("id", true);
 							this.win4.showWindow(mode, idOfContact);
 						},
 					},
@@ -61,7 +61,7 @@ export default class ContactActivities extends JetView{
 								css: {"float": "right"},
 								click:() => {
 									let mode = "add";
-									let idOfContact = this.getParam("id");
+									let idOfContact = this.getParam("id", true);
 									this.win4.showWindow(mode, idOfContact);
 								}
 							},
