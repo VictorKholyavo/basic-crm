@@ -145,10 +145,6 @@ export default class WindowsView extends JetView {
 				values.date = webix.Date.copy(values.DueDate);
 				values.time = webix.Date.copy(values.DueDate);
 				form.setValues(values);
-				if (idOfContact) {
-					this.$$("contactid").setValue(idOfContact);
-					this.$$("contactid").disable();
-				}
 			});
 			addButton.hide();
 			updateButton.show();
