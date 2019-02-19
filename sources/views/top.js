@@ -4,10 +4,10 @@ import {JetView, plugins} from "webix-jet";
 
 export default class TopView extends JetView{
 	config(){
-		var menu = {
-			view:"menu",
-			id:"top:menu",
-			localId: "menu",
+		const menu = {
+			view:"menu", 
+      id:"top:menu",
+			localId:"menu",
 			css:"app_menu",
 			width:180, layout:"y", select:true,
 			template:"<span class='webix_icon #icon#'></span> #value# ",
@@ -25,7 +25,7 @@ export default class TopView extends JetView{
 			}
 		};
 
-		var ui = {
+		const ui = {
 			type:"clean", paddingX:5, css:"app_layout",
 			rows:[
 				{ paddingX:5,

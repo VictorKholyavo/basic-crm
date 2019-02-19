@@ -60,6 +60,7 @@ export default class DataView extends JetView{
 									}
 								}
 							);
+							return false;
 						},
 						"fa-edit": (e, id) => {
 							let values = this.$$("datatable").getItem(id);

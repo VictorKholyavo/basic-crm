@@ -119,14 +119,14 @@ export default class WindowsView extends JetView {
 			},
 			body: form,
 			on:{
-				onHide:() => {
+				onHide:()=>{
 					this.$$("form").clear();
 					this.$$("form").clearValidation();
 				}
 			}
 		};
 	}
-
+  
 	showWindow(values, idOfContact){
 		let form = this.$$("form");
 		let addButton = this.$$("addButton");
@@ -150,13 +150,13 @@ export default class WindowsView extends JetView {
 			updateButton.show();
 			formTemplate.define({template: "Edit activity"});
 		}
-
+    
 		else {
 			updateButton.hide();
 			addButton.show();
 			formTemplate.define({template: "Add activity"});
 		}
-
+    
 		formTemplate.refresh();
 		this.getRoot().show();
 	}

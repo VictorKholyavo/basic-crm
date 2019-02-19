@@ -16,7 +16,6 @@ export default class StartView extends JetView {
 										height: 65,
 										template: "<div class='list'><img src='#Photo#' class='photo_icon'></div><div class='overall list'><div class='title list'>#FirstName# #LastName#</div><div class='year'>#Company#</div> </div>",
 									},
-									autoConfig:true,
 									width: 400,
 									select: true,
 									borderless: true,
