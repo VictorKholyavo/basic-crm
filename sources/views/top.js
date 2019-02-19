@@ -5,8 +5,8 @@ import {JetView, plugins} from "webix-jet";
 export default class TopView extends JetView{
 	config(){
 		const menu = {
-			view:"menu", 
-      id:"top:menu",
+			view:"menu",
+			id:"top:menu",
 			localId:"menu",
 			css:"app_menu",
 			width:180, layout:"y", select:true,
