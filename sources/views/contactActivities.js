@@ -1,7 +1,6 @@
 import {JetView} from "webix-jet";
 import {activities} from "models/activities";
 import WindowsView from "./form";
-import {contacts} from "models/contacts";
 import {activitytypes} from "models/activitytypes";
 
 export default class ContactActivities extends JetView{
@@ -40,32 +39,31 @@ export default class ContactActivities extends JetView{
 							);
 
 						},
-						"fa-edit": () => {
-							let mode = "edit";
+						"fa-edit": (e, id) => {
+							let values = this.$$("datatable").getItem(id);
 							let idOfContact = this.getParam("id", true);
-							this.win4.showWindow(mode, idOfContact);
+							this.win4.showWindow(values, idOfContact);
 						},
 					},
 				},
 				{
-
-						view: "toolbar",
-						css: "webix_header webix_dark",
-						cols:[
-							{
-								view:"button",
-								type:"icon",
-								icon:"wxi-user",
-								width: 200,
-								label:"Add activity",
-								css: {"float": "right"},
-								click:() => {
-									let mode = "add";
-									let idOfContact = this.getParam("id", true);
-									this.win4.showWindow(mode, idOfContact);
-								}
-							},
-						]
+					view: "toolbar",
+					css: "webix_header webix_dark",
+					cols:[
+						{
+							view:"button",
+							type:"icon",
+							icon:"wxi-user",
+							width: 200,
+							label:"Add activity",
+							css: {"float": "right"},
+							click:() => {
+								let mode = "add";
+								let idOfContact = this.getParam("id", true);
+								this.win4.showWindow(mode, idOfContact);
+							}
+						},
+					]
 				},
 			]
 
@@ -78,28 +76,26 @@ export default class ContactActivities extends JetView{
 	}
 	init(){
 		activities.waitData.then(() => {
-			let id = this.getParam("id", true)
+			let id = this.getParam("id", true);
 			activities.filter(
 				function(obj){
 					return obj.ContactID == id;
 				}
-			)
+			);
 			this.$$("datatable").sync(activities);
-		})
+		});
 		this.win4 = this.ui(WindowsView);
 	}
 	urlChange(){
 		activities.waitData.then(() => {
-		 	const datatable = this.$$("datatable");
-		 	let id = this.getParam("id", true);
-		 	if (!id)
-		 		return activities.filter();
-		 		activities.filter(
-		 			function(obj){
-		 				return obj.ContactID == id;
-		 			}
-		 		);
-			})
-
+			let id = this.getParam("id", true);
+			if (!id)
+				return activities.filter();
+			activities.filter(
+				function(obj){
+					return obj.ContactID == id;
+				}
+			);
+		});
 	}
 }

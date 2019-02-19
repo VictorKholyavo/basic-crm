@@ -1,8 +1,5 @@
 import {JetView} from "webix-jet";
 import {contacts} from "models/contacts";
-import {statuses} from "models/statuses";
-import DetailedView from "./detailes.js";
-import FormContact from "./formContact";
 
 export default class StartView extends JetView {
 	config(){
@@ -52,11 +49,13 @@ export default class StartView extends JetView {
 	}
 	init(){
 		this.$$("listForContacts").sync(contacts);
-
 		const list = this.$$("listForContacts");
+		contacts.waitData.then(() => {
+			this.show("detailes");
+		});
 		this.on(this.app, "Close", () => {
 			this.show("detailes");
-			this.$$("listForContacts").enable();
+			list.enable();
 		});
 	}
 	urlChange(){

@@ -86,3 +86,8 @@
 .list {
 	display: inline-block;
 }
+.formTemplate {
+	font-size: 24px;
+	text-align: center;
+	font-weight: bold;
+}

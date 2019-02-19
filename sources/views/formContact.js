@@ -1,7 +1,5 @@
 import {JetView} from "webix-jet";
-import {activitytypes} from "models/activitytypes";
 import {contacts} from "models/contacts";
-import {activities} from "models/activities";
 import {statuses} from "models/statuses";
 
 export default class FormContact extends JetView {
@@ -18,6 +16,7 @@ export default class FormContact extends JetView {
 							view: "template",
 							template: "Add new contact",
 							localId: "formTemplate",
+							css: "formTemplate",
 							height: 40
 						},
 						{
@@ -51,7 +50,6 @@ export default class FormContact extends JetView {
 											labelPosition: "left",
 											width: 300,
 											name: "StatusID",
-											required:true,
 											options: {
 												body:{
 													template: "#Value#",
@@ -147,9 +145,9 @@ export default class FormContact extends JetView {
 																		const values = this.$$("formContact").getValues();
 																		values.Photo = event.target.result;
 																		this.$$("photo").setValues({src: event.target.result});
-																		this.$$("formContact").setValues(values)
+																		this.$$("formContact").setValues(values);
 																	};
-																	reader.readAsDataURL(file)
+																	reader.readAsDataURL(file);
 																	return false;
 																}
 															}
@@ -160,7 +158,11 @@ export default class FormContact extends JetView {
 															localId:"deletePhoto",
 															value: "Delete Photo",
 															click:() => {
-
+																this.$$("photo").setValues({src: " "});
+																const values = this.$$("formContact").getValues();
+																values.Photo = " ";
+																this.$$("formContact").setValues(values);
+																return false;
 															}
 														},
 														{
@@ -201,15 +203,10 @@ export default class FormContact extends JetView {
 					}
 				}
 			],
-			rules:{
-				// Details: webix.rules.isNotEmpty,
-				// TypeID: webix.rules.isNotEmpty,
-				// ContactID: webix.rules.isNotEmpty,
-			},
 			elementsConfig:{
 				labelPosition:"top",
 			}
-		}
+		};
 	}
 	init(){
 
@@ -228,6 +225,7 @@ export default class FormContact extends JetView {
 			]).then(() => {
 				if (values) {
 					form.setValues(values);
+					this.$$("photo").setValues({src: values.Photo});
 				}
 			});
 		}
@@ -236,17 +234,14 @@ export default class FormContact extends JetView {
 		}
 	}
 	changePhoto (photo) {
-		let id = this.getParam("id", true);
 		const filled = this.$$("formContact").getValues();
-		console.log(id);
-		contacts.updateItem(filled.id, photo)
+		contacts.updateItem(filled.id, photo);
 	}
 	addOrSave(){
 		if (this.$$("formContact").validate()){
 
 			const filled = this.$$("formContact").getValues();
 			if(filled.id) {
-				console.log(filled);
 				contacts.updateItem(filled.id, filled);
 			}
 			else {

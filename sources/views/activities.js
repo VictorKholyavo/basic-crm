@@ -61,8 +61,9 @@ export default class DataView extends JetView{
 								}
 							);
 						},
-						"fa-edit": () => {
-							this.win4.showWindow("edit");
+						"fa-edit": (e, id) => {
+							let values = this.$$("datatable").getItem(id);
+							this.win4.showWindow(values);
 						},
 					},
 				},

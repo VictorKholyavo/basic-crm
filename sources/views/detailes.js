@@ -2,9 +2,8 @@ import {JetView} from "webix-jet";
 import {contacts} from "models/contacts";
 import {statuses} from "models/statuses";
 import {activities} from "models/activities";
-import FormContact from "./formContact";
 import ContactActivities from "./contactActivities";
-import FileTable from "./filesofContacts"
+import FileTable from "./filesofContacts";
 
 export default class DetailedView extends JetView{
 	config(){
@@ -15,7 +14,7 @@ export default class DetailedView extends JetView{
 						{
 							view:"template",
 							localId: "detailedInfo",
-							template: "<div class='one'><span class='nameOfContact'>#FirstName# #LastName#<span><span><img  class='photo' src='#Photo#'></span><span>#status#</span></div><div class='one'><span></span><span></span><span class='webix_icon fas fa-envelope'> #Email#</span> <span class='webix_icon fab fa-skype'> #Skype#</span> <span class='webix_icon fas fa-tag'> #Job#</span> <span class='webix_icon fas fa-briefcase'> #Company#</span></div> <div class='one'><span></span><span></span><span class='webix_icon far fa-calendar-alt'>{webix.i18n.dateFormatStr(#Birthday#)} </span><span class='webix-icon fas fa-map-marker-alt'> #Address#</span></div>",
+							template: "<div class='one'><span class='nameOfContact'>#FirstName# #LastName#<span><span><img  class='photo' src='#Photo#'></span><span>#status#</span></div><div class='one'><span></span><span></span><span class='webix_icon fas fa-envelope'> #Email#</span> <span class='webix_icon fab fa-skype'> #Skype#</span> <span class='webix_icon fas fa-tag'> #Job#</span> <span class='webix_icon fas fa-briefcase'> #Company#</span></div> <div class='one'><span></span><span></span><span class='webix_icon far fa-calendar-alt'>#template#</span><span class='webix-icon fas fa-map-marker-alt'> #Address#</span></div>",
 						},
 						{
 							rows: [
@@ -36,14 +35,11 @@ export default class DetailedView extends JetView{
 															if (result) {
 																let id = this.getParam("id", true);
 																contacts.remove(id);
-																let arr = activities.find(function(obj){
-																	return obj.ContactID == id;
+																activities.find(function(obj){
+																	if (obj.ContactID == id) {
+																		activities.remove(obj.id);
+																	}
 																});
-																let arr2 = [];
-																for (let i = 0; i < arr.length; i++) {
-																	arr2.push(arr[i].id);
-																}
-																activities.remove(arr2);
 																return false;
 															}
 														}
@@ -56,7 +52,7 @@ export default class DetailedView extends JetView{
 											value: "Edit",
 											width: 70,
 											click:() => {
-												this.show("formContact?mode=edit")
+												this.show("formContact?mode=edit");
 											}
 										},
 									]
@@ -67,10 +63,10 @@ export default class DetailedView extends JetView{
 					]
 				},
 				{
-					 view:"tabview", localId:"tabs", cells:[
-              { header:"Activities", body: ContactActivities  },
-              { header:"Files", body: FileTable}
-          ]
+					view:"tabview", localId:"tabs", cells:[
+						{ header:"Activities", body: ContactActivities  },
+						{ header:"Files", body: FileTable}
+					]
 				}
 			]
 		};
@@ -87,11 +83,11 @@ export default class DetailedView extends JetView{
 			let template = this.$$("detailedInfo");
 			let values = webix.copy(contacts.getItem(id));
 			if (values) {
-				if (values && values.StatusID && statuses.getItem(values.StatusID).Value) {
-						values.status = statuses.getItem(values.StatusID).Value;
+				if (values && values.StatusID && statuses.exists(id)) {
+					values.status = statuses.getItem(values.StatusID).Value;
 				}
 				else {
-					values.status = "Not available"
+					values.status = "Not available";
 				}
 				template.parse(values);
 			}
