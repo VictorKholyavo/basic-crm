@@ -27,7 +27,6 @@ export default class StartView extends JetView {
 									on:{
 										onAfterSelect: (id) => {
 											this.setParam("id", id, true);
-
 										}
 									},
 
@@ -64,7 +63,7 @@ export default class StartView extends JetView {
 		contacts.waitData.then(() => {
 			const list = this.$$("listForContacts");
 			let id = this.getParam("id");
-			if (!id && !contacts.exists(id)) {
+			if (!contacts.exists(id)) {
 				id = contacts.getFirstId();
 				this.setParam("id", id, true);
 			}

@@ -1,6 +1,7 @@
 import {JetView} from "webix-jet";
 import {contacts} from "models/contacts";
 import {statuses} from "models/statuses";
+import {activities} from "models/activities";
 import FormContact from "./formContact";
 import ContactActivities from "./contactActivities";
 import FileTable from "./filesofContacts"
@@ -14,7 +15,7 @@ export default class DetailedView extends JetView{
 						{
 							view:"template",
 							localId: "detailedInfo",
-							template: "<div class='one'><span class='nameOfContact'>#FirstName# #LastName#<span><span><img  class='photo' src='#Photo#'></span><span>#status#</span></div><div class='one'><span></span><span></span><span class='webix_icon fas fa-envelope'> #Email#</span> <span class='webix_icon fab fa-skype'> #Skype#</span> <span class='webix_icon fas fa-tag'> #Job#</span> <span class='webix_icon fas fa-briefcase'> #Company#</span></div> <div class='one'><span></span><span></span><span class='webix_icon far fa-calendar-alt'> #Birthday#</span><span class='webix-icon fas fa-map-marker-alt'> #Address#</span></div>",
+							template: "<div class='one'><span class='nameOfContact'>#FirstName# #LastName#<span><span><img  class='photo' src='#Photo#'></span><span>#status#</span></div><div class='one'><span></span><span></span><span class='webix_icon fas fa-envelope'> #Email#</span> <span class='webix_icon fab fa-skype'> #Skype#</span> <span class='webix_icon fas fa-tag'> #Job#</span> <span class='webix_icon fas fa-briefcase'> #Company#</span></div> <div class='one'><span></span><span></span><span class='webix_icon far fa-calendar-alt'>{webix.i18n.dateFormatStr(#Birthday#)} </span><span class='webix-icon fas fa-map-marker-alt'> #Address#</span></div>",
 						},
 						{
 							rows: [
@@ -25,8 +26,29 @@ export default class DetailedView extends JetView{
 											value: "Delete",
 											width: 70,
 											click: () => {
-												let id = this.getParam("id", true);
-												contacts.remove(id);
+												webix.confirm(
+													{
+														title:"Delete?",
+														ok:"Yes",
+														cancel:"No",
+														text:"Deleting cannot be undone. Delete?",
+														callback: (result) => {
+															if (result) {
+																let id = this.getParam("id", true);
+																contacts.remove(id);
+																let arr = activities.find(function(obj){
+																	return obj.ContactID == id;
+																});
+																let arr2 = [];
+																for (let i = 0; i < arr.length; i++) {
+																	arr2.push(arr[i].id);
+																}
+																activities.remove(arr2);
+																return false;
+															}
+														}
+													}
+												);
 											},
 										},
 										{
