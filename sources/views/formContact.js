@@ -4,6 +4,8 @@ import {statuses} from "models/statuses";
 
 export default class FormContact extends JetView {
 	config(){
+		const _ = this.app.getService("locale")._;
+
 		return {
 			view:"form",
 			localId: "formContact",
@@ -14,10 +16,10 @@ export default class FormContact extends JetView {
 					rows: [
 						{
 							view: "template",
-							template: "Add new contact",
+							template: _("Add new contact"),
 							localId: "formTemplate",
 							css: "formTemplate",
-							height: 40
+							height: 40,
 						},
 						{
 							cols: [
@@ -135,7 +137,7 @@ export default class FormContact extends JetView {
 														{
 															view:"uploader",
 															localId:"changePhoto",
-															value:"Change Photo",
+															value: _("Change photo"),
 															autosend: false,
 															on: {
 																onBeforeFileAdd: (upload) => {
@@ -156,7 +158,7 @@ export default class FormContact extends JetView {
 														{
 															view:"button",
 															localId:"deletePhoto",
-															value: "Delete Photo",
+															value: _("Delete photo"),
 															click:() => {
 																this.$$("photo").setValues({src: " "});
 																const values = this.$$("formContact").getValues();
@@ -181,7 +183,7 @@ export default class FormContact extends JetView {
 				{
 					view:"button",
 					localId:"updateButton",
-					value: "Save",
+					value: _("Save"),
 					click:() => {
 						this.addOrSave();
 					}
@@ -189,7 +191,7 @@ export default class FormContact extends JetView {
 				{
 					view:"button",
 					localId:"addButton",
-					value: "Add",
+					value: _("Add"),
 					click: () => 	{
 						this.addOrSave();
 					}
@@ -197,7 +199,7 @@ export default class FormContact extends JetView {
 				{
 					view:"button",
 					localId:"closeButton",
-					value: "Close",
+					value: _("Close"),
 					click:() => {
 						this.app.callEvent("Close", []);
 					}
@@ -212,10 +214,12 @@ export default class FormContact extends JetView {
 
 	}
 	urlChange(view, url){
+		const _ = this.app.getService("locale")._;
 		var id = this.getParam("id", true );
 		let template = this.$$("formTemplate");
+
 		if(url[0].params.mode) {
-			template.define({template: "Edit contact"});
+			template.define({template: _("Edit contact")});
 			template.refresh();
 			var form = this.$$("formContact");
 			var values = contacts.getItem(id);
@@ -252,6 +256,9 @@ export default class FormContact extends JetView {
 		else {
 			webix.message({ type:"error", text:"Form data is invalid" });
 		}
+		webix.dp(contacts, "onAfterInsert", function(response){
+			console.log(response);
+		})
 		this.app.callEvent("Close", []);
 	}
 }

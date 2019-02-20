@@ -36,7 +36,7 @@ export default class TopView extends JetView{
 						{
 							type: "header",
 							view: "template",
-							value: _("#value#"),
+							value: "#value#",
 							localId: "header",
 						},
 						{

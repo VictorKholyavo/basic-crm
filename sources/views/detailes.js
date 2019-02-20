@@ -16,7 +16,7 @@ export default class DetailedView extends JetView{
 						{
 							view:"template",
 							localId: "detailedInfo",
-							template: "<div class='one'><span class='nameOfContact'>#FirstName# #LastName#<span><span><img  class='photo' src='#Photo#'></span><span>#status#</span></div><div class='one'><span></span><span></span><span class='webix_icon fas fa-envelope'> #Email#</span> <span class='webix_icon fab fa-skype'> #Skype#</span> <span class='webix_icon fas fa-tag'> #Job#</span> <span class='webix_icon fas fa-briefcase'> #Company#</span></div> <div class='one'><span></span><span></span><span class='webix_icon far fa-calendar-alt'>#template#</span><span class='webix-icon fas fa-map-marker-alt'> #Address#</span></div>",
+							template: "<div class='one'><span class='nameOfContact'>#FirstName# #LastName#<span><span><img  class='photo' src='#Photo#'></span><span class='fas fa-#icon#'> #status#</span></div><div class='one'><span></span><span></span><span class='webix_icon fas fa-envelope'> #Email#</span> <span class='webix_icon fab fa-skype'> #Skype#</span> <span class='webix_icon fas fa-tag'> #Job#</span> <span class='webix_icon fas fa-briefcase'> #Company#</span></div> <div class='one'><span></span><span></span><span class='webix_icon far fa-calendar-alt'>#template#</span><span class='webix-icon fas fa-map-marker-alt'> #Address#</span></div>",
 						},
 						{
 							rows: [
@@ -90,6 +90,7 @@ export default class DetailedView extends JetView{
 			let values = webix.copy(contacts.getItem(id));
 			if (values) {
 				if (values && values.StatusID && statuses.exists(values.StatusID)) {
+					values.icon = statuses.getItem(values.StatusID).Icon;
 					values.status = statuses.getItem(values.StatusID).Value;
 				}
 				else {

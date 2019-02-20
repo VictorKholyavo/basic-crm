@@ -19,7 +19,7 @@ export default class SettingsView extends JetView {
 							columns: [
 								{id:"id", header:"id", width: 50, css: "rank", sort:"int"},
 								{id:"Value", header:"Value", editor: "text", fillspace:true, sort:"string"},
-								{id:"Icon", template:"<span class='fas fa-#Icon#'></span>", editor: "select", options: icons, header:"Icon"},
+								{id:"Icon", template:"<span class='fas fa-#Icon#'></span>", editor: "richselect", options: icons, header:"Icon"},
 								{id:"del", header:"", template:"{common.trashIcon()}"}
 							],
 							select: true,
@@ -53,7 +53,7 @@ export default class SettingsView extends JetView {
 							columns: [
 								{id:"id", header:"id", width: 50, css: "rank", sort:"int"},
 								{id:"Value", header:"Value", editor: "text", fillspace:true, sort:"string"},
-								{id:"Icon", header:"Icon"},
+								{id:"Icon", header:"Icon", template:"<span class='fas fa-#Icon#'></span>", editor: "select", options: icons},
 								{id:"del", header:"", template:"{common.trashIcon()}"}
 							],
 							select: true,
@@ -121,14 +121,6 @@ export default class SettingsView extends JetView {
 		statusesTable.sync(statuses);
 	}
 	urlChange(){
-		// contacts.waitData.then(() => {
-		// 	const list = this.$$("listForContacts");
-		// 	let id = this.getParam("id");
-		// 	if (!contacts.exists(id)) {
-		// 		id = contacts.getFirstId();
-		// 		this.setParam("id", id, true);
-		// 	}
-		// 	list.select(id);
-		// });
+
 	}
 }

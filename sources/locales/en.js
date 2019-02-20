@@ -7,6 +7,9 @@ export default {
 	"Add activity" : "Add activity",
 	"Delete" : "Delete",
 	"Edit" : "Edit",
+	"Save" : "Save",
+	"Add" : "Add",
+	"Close" : "Close",
 	"Upload file" : "Upload file",
 	"Add activity type" : "Add activity type",
 	"Add status" : "Add status",
@@ -17,5 +20,9 @@ export default {
 	"Today" : "Today",
 	"Tomorrow" : "Tomorrow",
 	"This week" : "This week",
-	"This mounth" : "This mounth"
+	"This mounth" : "This mounth",
+	"Edit contact" : "Edit contact",
+	"Add new contact" : "Add new contact",
+	"Change photo" : "Change photo",
+	"Delete photo" : "Delete photo"
 };

@@ -130,8 +130,8 @@ export default class DataView extends JetView{
 						else if (filter == 3) return item.DueDate < yesterday;
 						else if (filter == 4) return item.DueDate >= yesterday && item.DueDate <= today;
 						else if (filter == 5) return item.DueDate > today && item.DueDate < tommorow;
-						else if (filter == 6) return item.DueDate >= today && item.DueDate < thisWeek;
-						else if (filter == 7) return item.DueDate >= today && item.DueDate < thisMonth;
+						else if (filter == 6) return item.DueDate >= today.setHours(0,0,0) && item.DueDate < thisWeek;
+						else if (filter == 7) return item.DueDate >= today.setHours(0,0,0) && item.DueDate < thisMonth;
 					}
 				},
 				{
