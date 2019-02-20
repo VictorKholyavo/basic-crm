@@ -256,8 +256,8 @@ export default class FormContact extends JetView {
 		else {
 			webix.message({ type:"error", text:"Form data is invalid" });
 		}
-		webix.dp(contacts, "onAfterInsert", function(response){
-			console.log(response);
+		webix.dp(contacts).attachEvent("onAfterInsert", function(response){
+			let lastId = response;
 		})
 		this.app.callEvent("Close", []);
 	}
