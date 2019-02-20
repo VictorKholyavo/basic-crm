@@ -5,6 +5,9 @@ import {activitytypes} from "models/activitytypes";
 
 export default class ContactActivities extends JetView{
 	config(){
+		const _ = this.app.getService("locale")._;
+		const lang = this.app.getService("locale").getLang();
+
 		return {
 			rows: [
 				{
@@ -54,14 +57,15 @@ export default class ContactActivities extends JetView{
 							view:"button",
 							type:"icon",
 							icon:"wxi-user",
-							width: 200,
+							width: 300,
 							label:"Add activity",
 							css: {"float": "right"},
 							click:() => {
 								let mode = "add";
 								let idOfContact = this.getParam("id", true);
 								this.win4.showWindow(mode, idOfContact);
-							}
+							},
+							label: _("Add activity")
 						},
 					]
 				},

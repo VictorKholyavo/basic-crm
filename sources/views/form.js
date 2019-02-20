@@ -126,7 +126,7 @@ export default class WindowsView extends JetView {
 			}
 		};
 	}
-  
+
 	showWindow(values, idOfContact){
 		let form = this.$$("form");
 		let addButton = this.$$("addButton");
@@ -150,13 +150,13 @@ export default class WindowsView extends JetView {
 			updateButton.show();
 			formTemplate.define({template: "Edit activity"});
 		}
-    
+
 		else {
 			updateButton.hide();
 			addButton.show();
 			formTemplate.define({template: "Add activity"});
 		}
-    
+
 		formTemplate.refresh();
 		this.getRoot().show();
 	}
@@ -171,6 +171,7 @@ export default class WindowsView extends JetView {
 			const filled = this.$$("form").getValues();
 			let hours = filled.time.getHours();
 			let mins = filled.time.getMinutes();
+			console.log(filled.time);
 
 			filled.DueDate = new Date(filled.date.setHours(hours, mins));
 			delete filled.date;

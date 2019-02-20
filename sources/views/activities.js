@@ -6,6 +6,9 @@ import {activitytypes} from "models/activitytypes";
 
 export default class DataView extends JetView{
 	config(){
+		const _ = this.app.getService("locale")._;
+		const lang = this.app.getService("locale").getLang();
+
 		return {
 			rows: [
 				{
@@ -16,14 +19,33 @@ export default class DataView extends JetView{
 							view:"button",
 							type:"icon",
 							icon:"wxi-user",
-							width: 200,
+							width: 300,
 							label:"Add activity",
 							css: {"float": "right"},
 							click:() => {
 								this.win4.showWindow("add");
-							}
+							},
+							label: _("Add activity")
 						},
 					]
+				},
+				{
+					view: "tabbar",
+					localId: "mytabbar",
+					options: [
+						{id: 1, value: _("All")},
+						{id: 2, value: _("Completed")},
+						{id: 3, value: _("Overdue")},
+						{id: 4, value: _("Today")},
+						{id: 5, value: _("Tomorrow")},
+						{id: 6, value: _("This week")},
+						{id: 7, value: _("This mounth")},
+					],
+					on: {
+						onChange:() => {
+							this.$$("datatable").filterByAll();
+						}
+					}
 				},
 				{
 					view:"datatable",
@@ -80,6 +102,51 @@ export default class DataView extends JetView{
 		activities.filter();
 		this.$$("datatable").sync(activities);
 		this.win4 = this.ui(WindowsView);
+		activities.waitData.then(() => {
+			this.$$("datatable").registerFilter(
+				this.$$("mytabbar"),
+				{
+					columnId: "State",
+					compare: function(value, filter, item) {
+						let today = new Date;
+						today.setHours(23, 59, 59);
+
+						let yesterday = new Date;
+						yesterday.setDate(yesterday.getDate() - 1);
+						yesterday.setHours(0, 0, 0, 0);
+
+						let tommorow = new Date;
+						tommorow.setDate(tommorow.getDate() + 1);
+						tommorow.setHours(23, 59, 59);
+
+						let thisWeek = new Date;
+						thisWeek.setDate(thisWeek.getDate() + 7);
+						thisWeek.setHours(23, 59, 59);
+
+						let thisMonth = new Date;
+						thisMonth.setMonth(thisMonth.getMonth() + 1);
+						thisMonth.setHours(23, 59, 59);
+
+						if (filter == 1) return value;
+						else if (filter == 2) return value == "Close";
+						else if (filter == 3) return item.DueDate < yesterday;
+						else if (filter == 4) return item.DueDate >= yesterday && item.DueDate <= today;
+						else if (filter == 5) return item.DueDate > today && item.DueDate < tommorow;
+						else if (filter == 6) return item.DueDate >= today && item.DueDate < thisWeek;
+						else if (filter == 7) return item.DueDate >= today && item.DueDate < thisMonth;
+					}
+				},
+				{
+					getValue:function(node){
+						return node.getValue();
+					},
+					setValue:function(node, value){
+						node.setValue(value);
+					}
+				},
+			);
+		})
+
 	}
 	urlChange(){
 		const datatable = this.$$("datatable");

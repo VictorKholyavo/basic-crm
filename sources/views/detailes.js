@@ -7,6 +7,9 @@ import FileTable from "./filesofContacts";
 
 export default class DetailedView extends JetView{
 	config(){
+		const _ = this.app.getService("locale")._;
+		const lang = this.app.getService("locale").getLang();
+
 		return {
 			rows: [
 				{
@@ -23,7 +26,7 @@ export default class DetailedView extends JetView{
 										{
 											view: "button",
 											value: "Delete",
-											width: 70,
+											width: 120,
 											click: () => {
 												webix.confirm(
 													{
@@ -46,14 +49,16 @@ export default class DetailedView extends JetView{
 													}
 												);
 											},
+											label: _("Delete")
 										},
 										{
 											view: "button",
 											value: "Edit",
-											width: 70,
+											width: 120,
 											click:() => {
 												this.show("formContact?mode=edit");
-											}
+											},
+											label: _("Edit")
 										},
 									]
 								},
@@ -63,10 +68,12 @@ export default class DetailedView extends JetView{
 					]
 				},
 				{
-					view:"tabview", localId:"tabs", cells:[
-						{ header:"Activities", body: ContactActivities  },
-						{ header:"Files", body: FileTable}
-					]
+					view:"tabview",
+					localId:"tabs",
+					cells:[
+						{ header:"Activities", body: ContactActivities, header: _("Activities")  },
+						{ header:"Files", body: FileTable, header: _("Files")}
+					],
 				}
 			]
 		};
@@ -83,11 +90,11 @@ export default class DetailedView extends JetView{
 			let template = this.$$("detailedInfo");
 			let values = webix.copy(contacts.getItem(id));
 			if (values) {
-				if (values && values.StatusID && statuses.exists(id)) {
+				if (values && values.StatusID && statuses.exists(values.StatusID)) {
 					values.status = statuses.getItem(values.StatusID).Value;
 				}
 				else {
-					values.status = "Not available";
+					values.status = "Status not available";
 				}
 				template.parse(values);
 			}
