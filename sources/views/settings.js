@@ -86,10 +86,9 @@ export default class SettingsView extends JetView {
 							rows: [
 								{
 									view: "template",
-									template: "Language",
+									template: _("Language"),
 									height: 40,
-									css: "formTemplate",
-									template: _("Language")
+									css: "formTemplate"
 								},
 								{
 									view: "segmented",
@@ -111,7 +110,7 @@ export default class SettingsView extends JetView {
 						}
 					]
 				}
-		  ]
+			]
 		};
 	}
 

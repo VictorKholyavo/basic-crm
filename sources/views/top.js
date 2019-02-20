@@ -5,7 +5,6 @@ import {JetView, plugins} from "webix-jet";
 export default class TopView extends JetView{
 	config(){
 		const _ = this.app.getService("locale")._;
-		const lang = this.app.getService("locale").getLang();
 
 		const menu = {
 			view:"menu",
@@ -25,7 +24,6 @@ export default class TopView extends JetView{
 					header.define({template: this.getItem(id).value});
 					header.refresh();
 				},
-
 			},
 		};
 
@@ -38,10 +36,8 @@ export default class TopView extends JetView{
 						{
 							type: "header",
 							view: "template",
-							value: "#value#",
+							value: _("#value#"),
 							localId: "header",
-							value:(obj) => {
-								return _ (obj.value)},
 						},
 						{
 							css:"webix_shadow_medium",

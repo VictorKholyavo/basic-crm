@@ -8,7 +8,6 @@ import FileTable from "./filesofContacts";
 export default class DetailedView extends JetView{
 	config(){
 		const _ = this.app.getService("locale")._;
-		const lang = this.app.getService("locale").getLang();
 
 		return {
 			rows: [
@@ -71,8 +70,8 @@ export default class DetailedView extends JetView{
 					view:"tabview",
 					localId:"tabs",
 					cells:[
-						{ header:"Activities", body: ContactActivities, header: _("Activities")  },
-						{ header:"Files", body: FileTable, header: _("Files")}
+						{ header:_("Activities"), body: ContactActivities },
+						{ header:_("Files"), body: FileTable }
 					],
 				}
 			]

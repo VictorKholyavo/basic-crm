@@ -4,7 +4,6 @@ import {contacts} from "models/contacts";
 export default class StartView extends JetView {
 	config(){
 		const _ = this.app.getService("locale")._;
-		const lang = this.app.getService("locale").getLang();
 
 		return {
 			cols: [
@@ -14,14 +13,14 @@ export default class StartView extends JetView {
 							rows: [
 								{
 									height: 35,
-                	view:"toolbar",
-                	elements:[
-                    {
+									view:"toolbar",
+									elements:[
+										{
 											view:"text",
 											localId:"list_input",
 											css:"fltr",
 										}
-                	]
+									]
 								},
 								{
 									view:"list",
@@ -83,7 +82,7 @@ export default class StartView extends JetView {
 					if (equals(obj.Job, value)) return true;
 					if (equals(obj.Birthday, value)) return true;
 					if (equals(obj.StartDate, value)) return true;
-				})
+				});
 			});
 		});
 		this.on(this.app, "Close", () => {

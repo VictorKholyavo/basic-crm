@@ -171,7 +171,6 @@ export default class WindowsView extends JetView {
 			const filled = this.$$("form").getValues();
 			let hours = filled.time.getHours();
 			let mins = filled.time.getMinutes();
-			console.log(filled.time);
 
 			filled.DueDate = new Date(filled.date.setHours(hours, mins));
 			delete filled.date;

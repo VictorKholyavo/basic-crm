@@ -4,8 +4,7 @@ import {files} from "models/files";
 export default class FileTable extends JetView{
 	config(){
 		const _ = this.app.getService("locale")._;
-		const lang = this.app.getService("locale").getLang();
-		
+
 		return {
 			rows: [
 				{

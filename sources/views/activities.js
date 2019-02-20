@@ -7,7 +7,6 @@ import {activitytypes} from "models/activitytypes";
 export default class DataView extends JetView{
 	config(){
 		const _ = this.app.getService("locale")._;
-		const lang = this.app.getService("locale").getLang();
 
 		return {
 			rows: [
@@ -20,12 +19,11 @@ export default class DataView extends JetView{
 							type:"icon",
 							icon:"wxi-user",
 							width: 300,
-							label:"Add activity",
+							label: _("Add activity"),
 							css: {"float": "right"},
 							click:() => {
 								this.win4.showWindow("add");
-							},
-							label: _("Add activity")
+							}
 						},
 					]
 				},
@@ -143,10 +141,9 @@ export default class DataView extends JetView{
 					setValue:function(node, value){
 						node.setValue(value);
 					}
-				},
+				}
 			);
-		})
-
+		});
 	}
 	urlChange(){
 		const datatable = this.$$("datatable");
