@@ -27,7 +27,16 @@ export default class StartView extends JetView {
 									localId:"listForContacts",
 									type: {
 										height: 65,
-										template: "<div class='list'><img src='#Photo#' class='photo_icon'></div><div class='overall list'><div class='title list'>#FirstName# #LastName#</div><div class='year'>#Company#</div> </div>",
+										template: (obj) => {
+											let photo = "";
+											if (!obj.Photo) {
+												photo = "<img class='defaultPhoto'>";
+											}
+											else {
+												photo = "<img src ="+obj.Photo+" class='photo_icon'>";
+											}
+											return "<div class='list'>" + photo + "</div><div class='overall list'><div class='title list'>"+obj.FirstName + " " + obj.LastName + "</div><div class='year'>" + obj.Company + "</div></div>";
+										}
 									},
 									width: 400,
 									select: true,
@@ -85,7 +94,10 @@ export default class StartView extends JetView {
 				});
 			});
 		});
-		this.on(this.app, "Close", () => {
+		webix.dp(contacts).attachEvent("onAfterInsert", function(response){
+			list.select(response.id);
+		});
+		this.on(this.app, "CloseTheFormAndShowDetails", () => {
 			this.show("detailes");
 			list.enable();
 		});

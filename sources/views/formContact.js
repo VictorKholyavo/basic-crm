@@ -201,10 +201,13 @@ export default class FormContact extends JetView {
 					localId:"closeButton",
 					value: _("Close"),
 					click:() => {
-						this.app.callEvent("Close", []);
+						this.app.callEvent("CloseTheFormAndShowDetails", []);
 					}
 				}
 			],
+			rules:{
+				$all: webix.rules.isNotEmpty,
+			},
 			elementsConfig:{
 				labelPosition:"top",
 			}
@@ -215,18 +218,25 @@ export default class FormContact extends JetView {
 	}
 	urlChange(view, url){
 		const _ = this.app.getService("locale")._;
-		var id = this.getParam("id", true );
-		let template = this.$$("formTemplate");
+		let id = this.getParam("id", true );
+		let mode = this.getParam("mode");
 
-		if(url[0].params.mode) {
+		let template = this.$$("formTemplate");
+		let updateButton = this.$$("updateButton");
+		let addButton = this.$$("addButton");
+		const form = this.$$("formContact");
+
+		if(mode == "edit") {
+			form.clear();
+			form.clearValidation();
 			template.define({template: _("Edit contact")});
 			template.refresh();
-			var form = this.$$("formContact");
-			var values = contacts.getItem(id);
-			this.$$("addButton").hide();
+			addButton.hide();
+
 			webix.promise.all ([
 				contacts.waitData
 			]).then(() => {
+				const values = contacts.getItem(id);
 				if (values) {
 					form.setValues(values);
 					this.$$("photo").setValues({src: values.Photo});
@@ -234,12 +244,13 @@ export default class FormContact extends JetView {
 			});
 		}
 		else {
-			this.$$("updateButton").hide();
+			form.clear();
+			form.clearValidation();
+			updateButton.hide();
+			addButton.show();
+			template.define({template: "Add new contact"});
+			template.refresh();
 		}
-	}
-	changePhoto (photo) {
-		const filled = this.$$("formContact").getValues();
-		contacts.updateItem(filled.id, photo);
 	}
 	addOrSave(){
 		if (this.$$("formContact").validate()){
@@ -256,9 +267,6 @@ export default class FormContact extends JetView {
 		else {
 			webix.message({ type:"error", text:"Form data is invalid" });
 		}
-		webix.dp(contacts).attachEvent("onAfterInsert", function(response){
-			let lastId = response;
-		})
-		this.app.callEvent("Close", []);
+		this.app.callEvent("CloseTheFormAndShowDetails", []);
 	}
 }
