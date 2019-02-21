@@ -75,9 +75,11 @@
 	background: #eeeeee;
   border: 1px solid black;
 }
-.photo_icon {
-	width: 50px;
-	height: 50px;
+.defaultPhotoBig{
+	width: 160px;
+  height: 160px;
+	background: lightgrey;
+  border: 1px solid black;
 }
 .nameOfContact {
   font-size: 25px;
@@ -86,8 +88,20 @@
 .list {
 	display: inline-block;
 }
+.overall{
+	margin-left: 10px;
+}
 .formTemplate {
 	font-size: 24px;
 	text-align: center;
 	font-weight: bold;
+}
+.defaultPhoto {
+	background-color: lightgrey;
+	width: 45px;
+	height: 45px;
+}
+.photo_icon {
+	width: 50px;
+	height: 50px;
 }

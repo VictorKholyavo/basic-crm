@@ -14,7 +14,18 @@ export default class DetailedView extends JetView{
 						{
 							view:"template",
 							localId: "detailedInfo",
-							template: "<div class='one'><span class='nameOfContact'>#FirstName# #LastName#<span><span><img  class='photo' src='#Photo#'></span><span>#status#</span></div><div class='one'><span></span><span></span><span class='webix_icon fas fa-envelope'> #Email#</span> <span class='webix_icon fab fa-skype'> #Skype#</span> <span class='webix_icon fas fa-tag'> #Job#</span> <span class='webix_icon fas fa-briefcase'> #Company#</span></div> <div class='one'><span></span><span></span><span class='webix_icon far fa-calendar-alt'>#template#</span><span class='webix-icon fas fa-map-marker-alt'> #Address#</span></div>",
+							template:(obj) => {
+								let format = webix.Date.dateToStr("%d %M %Y");
+								let birthday = format(obj.Birthday);
+								let photo = "";
+								if (!obj.Photo) {
+									photo = "<img class='defaultPhotoBig'>";
+								}
+								else {
+									photo = "<img src ="+obj.Photo+" class='photo'>";
+								}
+								return "<div class='one'><span class='nameOfContact'>" + obj.FirstName + " " + obj.LastName + "<span><span>"+photo+"</span><span>" + obj.status + "</span></div><div class='one'><span></span><span></span><span class='webix_icon fas fa-envelope'>" + obj.Email + "</span> <span class='webix_icon fab fa-skype'>"+ obj.Skype + "</span> <span class='webix_icon fas fa-tag'>" + obj.Job + "</span> <span class='webix_icon fas fa-briefcase'>" + obj.Company + "</span></div><div class='one'><span></span><span></span><span class='webix_icon far fa-calendar-alt'>" + birthday + "</span><span class='webix-icon fas fa-map-marker-alt'>" + obj.Address + "</span></div>";
+							}
 						},
 						{
 							rows: [
@@ -40,6 +51,7 @@ export default class DetailedView extends JetView{
 																		activities.remove(obj.id);
 																	}
 																});
+																this.app.callEvent("CloseTheFormAndShowDetails", []);
 																return false;
 															}
 														}

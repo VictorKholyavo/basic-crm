@@ -4,6 +4,7 @@ import {statuses} from "models/statuses";
 
 export default class FormContact extends JetView {
 	config(){
+
 		return {
 			view:"form",
 			localId: "formContact",
@@ -14,7 +15,7 @@ export default class FormContact extends JetView {
 					rows: [
 						{
 							view: "template",
-							template: "Add new contact",
+							template: " ",
 							localId: "formTemplate",
 							css: "formTemplate",
 							height: 40
@@ -120,7 +121,16 @@ export default class FormContact extends JetView {
 															view: "template",
 															localId: "photo",
 															name: "Photo",
-															template: "<img class='photo' src='#src#'>"
+															template: (obj)=> {
+																let photo = "";
+																if (obj.src) {
+																	photo = "<img class='photo' src="+obj.src+">";
+																}
+																else {
+																	photo = "<img class='defaultPhotoBig'>";
+																}
+																return photo;
+															}
 														},
 														{
 
@@ -199,10 +209,13 @@ export default class FormContact extends JetView {
 					localId:"closeButton",
 					value: "Close",
 					click:() => {
-						this.app.callEvent("Close", []);
+						this.app.callEvent("CloseTheFormAndShowDetails", []);
 					}
 				}
 			],
+			rules:{
+				$all: webix.rules.isNotEmpty,
+			},
 			elementsConfig:{
 				labelPosition:"top",
 			}
@@ -211,15 +224,22 @@ export default class FormContact extends JetView {
 	init(){
 
 	}
-	urlChange(view, url){
-		var id = this.getParam("id", true );
+	urlChange(){
+		let id = this.getParam("id", true );
+		let mode = this.getParam("mode");
+
 		let template = this.$$("formTemplate");
-		if(url[0].params.mode) {
+		let updateButton = this.$$("updateButton");
+		let addButton = this.$$("addButton");
+		const form = this.$$("formContact");
+
+		if(mode == "edit") {
+			form.clear();
+			form.clearValidation();
 			template.define({template: "Edit contact"});
 			template.refresh();
-			var form = this.$$("formContact");
 			var values = contacts.getItem(id);
-			this.$$("addButton").hide();
+			addButton.hide();
 			webix.promise.all ([
 				contacts.waitData
 			]).then(() => {
@@ -230,12 +250,13 @@ export default class FormContact extends JetView {
 			});
 		}
 		else {
-			this.$$("updateButton").hide();
+			form.clear();
+			form.clearValidation();
+			updateButton.hide();
+			addButton.show();
+			template.define({template: "Add new contact"});
+			template.refresh();
 		}
-	}
-	changePhoto (photo) {
-		const filled = this.$$("formContact").getValues();
-		contacts.updateItem(filled.id, photo);
 	}
 	addOrSave(){
 		if (this.$$("formContact").validate()){
@@ -252,6 +273,7 @@ export default class FormContact extends JetView {
 		else {
 			webix.message({ type:"error", text:"Form data is invalid" });
 		}
-		this.app.callEvent("Close", []);
+
+		this.app.callEvent("CloseTheFormAndShowDetails", []);
 	}
 }
