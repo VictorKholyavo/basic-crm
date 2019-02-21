@@ -238,11 +238,11 @@ export default class FormContact extends JetView {
 			form.clearValidation();
 			template.define({template: "Edit contact"});
 			template.refresh();
-			var values = contacts.getItem(id);
 			addButton.hide();
 			webix.promise.all ([
 				contacts.waitData
 			]).then(() => {
+				const values = contacts.getItem(id);
 				if (values) {
 					form.setValues(values);
 					this.$$("photo").setValues({src: values.Photo});
