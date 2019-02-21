@@ -26,7 +26,7 @@ export default class DetailedView extends JetView{
 								else {
 									photo = "<img src ="+obj.Photo+" class='photo'>";
 								}
-								return "<div class='one'><span class='nameOfContact'>" + obj.FirstName + " " + obj.LastName + "<span><span>"+photo+"</span><span>" + obj.status + "</span></div><div class='one'><span></span><span></span><span class='webix_icon fas fa-envelope'>" + obj.Email + "</span> <span class='webix_icon fab fa-skype'>"+ obj.Skype + "</span> <span class='webix_icon fas fa-tag'>" + obj.Job + "</span> <span class='webix_icon fas fa-briefcase'>" + obj.Company + "</span></div><div class='one'><span></span><span></span><span class='webix_icon far fa-calendar-alt'>" + birthday + "</span><span class='webix-icon fas fa-map-marker-alt'>" + obj.Address + "</span></div>";
+								return "<div class='one'><span class='nameOfContact'>" + obj.FirstName + " " + obj.LastName + "<span><span>"+photo+"</span><span class='fas fa-"+obj.icon+"'>"+" "+ obj.status + "</span></div><div class='one'><span></span><span></span><span class='webix_icon fas fa-envelope'>" + obj.Email + "</span> <span class='webix_icon fab fa-skype'>"+ obj.Skype + "</span> <span class='webix_icon fas fa-tag'>" + obj.Job + "</span> <span class='webix_icon fas fa-briefcase'>" + obj.Company + "</span></div><div class='one'><span></span><span></span><span class='webix_icon far fa-calendar-alt'>" + birthday + "</span><span class='webix-icon fas fa-map-marker-alt'>" + obj.Address + "</span></div>";
 							}
 						},
 						{

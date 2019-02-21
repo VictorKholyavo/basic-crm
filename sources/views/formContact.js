@@ -122,7 +122,16 @@ export default class FormContact extends JetView {
 															view: "template",
 															localId: "photo",
 															name: "Photo",
-															template: "<img class='photo' src='#src#'>"
+															template: (obj)=> {
+																let photo = "";
+																if (obj.src) {
+																	photo = "<img class='photo' src="+obj.src+">";
+																}
+																else {
+																	photo = "<img class='defaultPhotoBig'>";
+																}
+																return photo;
+															}
 														},
 														{
 
@@ -216,7 +225,7 @@ export default class FormContact extends JetView {
 	init(){
 
 	}
-	urlChange(view, url){
+	urlChange(){
 		const _ = this.app.getService("locale")._;
 		let id = this.getParam("id", true );
 		let mode = this.getParam("mode");

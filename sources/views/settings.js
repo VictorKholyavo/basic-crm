@@ -53,7 +53,7 @@ export default class SettingsView extends JetView {
 							columns: [
 								{id:"id", header:"id", width: 50, css: "rank", sort:"int"},
 								{id:"Value", header:"Value", editor: "text", fillspace:true, sort:"string"},
-								{id:"Icon", header:"Icon", template:"<span class='fas fa-#Icon#'></span>", editor: "select", options: icons},
+								{id:"Icon", header:"Icon", template:"<span class='fas fa-#Icon#'></span>", editor: "richselect", options: icons},
 								{id:"del", header:"", template:"{common.trashIcon()}"}
 							],
 							select: true,
