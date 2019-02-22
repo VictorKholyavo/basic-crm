@@ -16,7 +16,7 @@ export default class FormContact extends JetView {
 					rows: [
 						{
 							view: "template",
-							template: _("Add new contact"),
+							template: " ",
 							localId: "formTemplate",
 							css: "formTemplate",
 							height: 40,
@@ -246,7 +246,6 @@ export default class FormContact extends JetView {
 		if(mode == "edit") {
 			template.define({template: _("Edit contact")});
 			addButton.hide();
-
 			webix.promise.all ([
 				contacts.waitData
 			]).then(() => {

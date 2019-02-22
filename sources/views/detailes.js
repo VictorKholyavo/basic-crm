@@ -53,6 +53,7 @@ export default class DetailedView extends JetView{
 																		activities.remove(obj.id);
 																	}
 																});
+																this.app.callEvent("CloseTheFormAndShowDetails", []);
 																return false;
 															}
 														}
