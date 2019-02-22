@@ -15,7 +15,7 @@ export default class ContactActivities extends JetView{
 					columns: [
 						{id:"State", sort:"string",width: 40, header: "", checkValue:"Close", uncheckValue:"Open", template:"{common.checkbox()}"},
 						{id:"TypeID", header:{content:"selectFilter"}, collection: activitytypes,  sort:"string"},
-						{id:"DueDate", format: webix.Date.dateToStr("%d %M %Y"), sort:"date", header:{content:"dateRangeFilter"}, width:160 },
+						{id:"DueDate", format: webix.Date.dateToStr("%d %M %Y"), sort:"date", header:{content:"dateRangeFilter", inputConfig:{format:webix.Date.dateToStr("%d %M %Y")}}, width:160 },
 						{id:"Details", header:{content:"textFilter"}, compare:likeCompare, sort:"string", fillspace: true},
 						{id:"edit", header:"", template:"<i class='far fa-edit'></i>"},
 						{id:"del", header:"", template:"{common.trashIcon()}"}
