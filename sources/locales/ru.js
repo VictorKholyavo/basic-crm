@@ -5,6 +5,7 @@ export default {
 	"Language" : "Язык",
 	"Add Contact" : "Добавить контакт",
 	"Add activity" : "Добавить мероприятие",
+	"Edit activity" : "Редактировать мероприятие",
 	"Delete" : "Удалить",
 	"Edit" : "Редактировать",
 	"Save" : "Сохранить",

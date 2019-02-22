@@ -60,9 +60,8 @@ export default class ContactActivities extends JetView{
 							label:_("Add activity"),
 							css: {"float": "right"},
 							click:() => {
-								let mode = "add";
 								let idOfContact = this.getParam("id", true);
-								this.win4.showWindow(mode, idOfContact);
+								this.win4.showWindow("", idOfContact);
 							},
 						},
 					]

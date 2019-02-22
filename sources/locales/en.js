@@ -5,6 +5,7 @@ export default {
 	"Language" : "Language",
 	"Add Contact" : "Add Contact",
 	"Add activity" : "Add activity",
+	"Edit activity" : "Edit activity",
 	"Delete" : "Delete",
 	"Edit" : "Edit",
 	"Save" : "Save",

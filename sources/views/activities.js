@@ -22,7 +22,7 @@ export default class DataView extends JetView{
 							label: _("Add activity"),
 							css: {"float": "right"},
 							click:() => {
-								this.win4.showWindow("add");
+								this.win4.showWindow();
 							}
 						},
 					]

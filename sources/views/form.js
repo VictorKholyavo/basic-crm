@@ -130,6 +130,7 @@ export default class WindowsView extends JetView {
 	}
 
 	showWindow(values, idOfContact){
+		const _ = this.app.getService("locale")._;
 		let form = this.$$("form");
 		let addButton = this.$$("addButton");
 		let updateButton = this.$$("updateButton");
@@ -150,13 +151,13 @@ export default class WindowsView extends JetView {
 			});
 			addButton.hide();
 			updateButton.show();
-			formTemplate.define({template: "Edit activity"});
+			formTemplate.define({template: _("Edit activity")});
 		}
 
 		else {
 			updateButton.hide();
 			addButton.show();
-			formTemplate.define({template: "Add activity"});
+			formTemplate.define({template: _("Add activity")});
 		}
 
 		formTemplate.refresh();
