@@ -126,7 +126,6 @@ export default class DataView extends JetView{
 						let thisMonth = new Date;
 						thisMonth.setMonth(thisMonth.getMonth() + 1, 0);
 						thisMonth.setHours(23, 59, 59);
-						console.log(thisMonth);
 
 						if (filter == 1) return value;
 						else if (filter == 2) return value == "Close";

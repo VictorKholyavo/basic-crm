@@ -5,6 +5,8 @@ import {activities} from "models/activities";
 
 export default class WindowsView extends JetView {
 	config(){
+		const _ = this.app.getService("locale")._;
+
 		const form = {
 			view:"form",
 			localId: "form",
@@ -76,21 +78,21 @@ export default class WindowsView extends JetView {
 				{
 					view:"button",
 					localId:"updateButton",
-					value: "Save",
+					value: _("Save"),
 					width: 100,
 					click:() => { this.addOrSave();}
 				},
 				{
 					view:"button",
 					localId:"addButton",
-					value: "Add",
+					value: _("Add"),
 					width: 100,
 					click: () => 	{ this.addOrSave();}
 				},
 				{
 					view:"button",
 					localId:"closeButton",
-					value: "Close",
+					value: _("Close"),
 					width: 100,
 					click:function() {
 						this.getTopParentView().hide();
