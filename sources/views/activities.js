@@ -117,21 +117,24 @@ export default class DataView extends JetView{
 						tommorow.setDate(tommorow.getDate() + 1);
 						tommorow.setHours(23, 59, 59);
 
-						let thisWeek = new Date;
-						thisWeek.setDate(thisWeek.getDate() + 7);
-						thisWeek.setHours(23, 59, 59);
+						let sunday = new Date;
+						sunday.setHours(23, 59, 59);
+
+						let toSunday = 7 - sunday.getDay();
+						sunday.setDate(sunday.getDate() + toSunday);
 
 						let thisMonth = new Date;
-						thisMonth.setMonth(thisMonth.getMonth() + 1);
+						thisMonth.setMonth(thisMonth.getMonth() + 1, 0);
 						thisMonth.setHours(23, 59, 59);
+						console.log(thisMonth);
 
 						if (filter == 1) return value;
 						else if (filter == 2) return value == "Close";
 						else if (filter == 3) return item.DueDate < yesterday;
-						else if (filter == 4) return item.DueDate > yesterday.setHours(23,59,59) && item.DueDate <= today;
-						else if (filter == 5) return item.DueDate > today && item.DueDate < tommorow;
-						else if (filter == 6) return item.DueDate >= today.setHours(0,0,0) && item.DueDate < thisWeek;
-						else if (filter == 7) return item.DueDate >= today.setHours(0,0,0) && item.DueDate < thisMonth;
+						else if (filter == 4) return item.DueDate > yesterday.setHours(23, 59, 59) && item.DueDate <= today;
+						else if (filter == 5) return item.DueDate > today && item.DueDate <= tommorow;
+						else if (filter == 6) return item.DueDate >= today.setHours(0, 0, 0) && item.DueDate <= sunday;
+						else if (filter == 7) return item.DueDate >= today.setHours(0, 0, 0) && item.DueDate <= thisMonth;
 					}
 				},
 				{
