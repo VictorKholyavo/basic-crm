@@ -53,6 +53,11 @@ export default class FormContact extends JetView {
 											width: 300,
 											name: "StatusID",
 											options: {
+												filter:function(item, value){
+														if(item.Value.toString().toLowerCase().indexOf(value.toLowerCase())===0)
+																 return true;
+														return false;
+												},
 												body:{
 													template: "#Value#",
 													data: statuses
@@ -235,11 +240,11 @@ export default class FormContact extends JetView {
 		let addButton = this.$$("addButton");
 		const form = this.$$("formContact");
 
+		form.clear();
+		form.clearValidation();
+
 		if(mode == "edit") {
-			form.clear();
-			form.clearValidation();
 			template.define({template: _("Edit contact")});
-			template.refresh();
 			addButton.hide();
 
 			webix.promise.all ([
@@ -253,13 +258,11 @@ export default class FormContact extends JetView {
 			});
 		}
 		else {
-			form.clear();
-			form.clearValidation();
 			updateButton.hide();
 			addButton.show();
 			template.define({template: "Add new contact"});
-			template.refresh();
 		}
+		template.refresh();
 	}
 	addOrSave(){
 		if (this.$$("formContact").validate()){
@@ -272,10 +275,10 @@ export default class FormContact extends JetView {
 				contacts.add(filled);
 			}
 			webix.message("All is correct");
+			this.app.callEvent("CloseTheFormAndShowDetails", []);
 		}
 		else {
 			webix.message({ type:"error", text:"Form data is invalid" });
 		}
-		this.app.callEvent("CloseTheFormAndShowDetails", []);
 	}
 }
