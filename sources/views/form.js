@@ -126,33 +126,37 @@ export default class WindowsView extends JetView {
 			}
 		};
 	}
-	showWindow(mode){
+  
+	showWindow(values, idOfContact){
 		let form = this.$$("form");
 		let addButton = this.$$("addButton");
 		let updateButton = this.$$("updateButton");
 		let formTemplate = this.$$("formTemplate");
-		let id = this.getParam("id", true);
-		let values = activities.getItem(id);
 
-		if (mode == "add") {
-			updateButton.hide();
-			addButton.show();
-			formTemplate.define({template: "Add activity"});
+		if (idOfContact) {
+			this.$$("contactid").setValue(idOfContact);
+			this.$$("contactid").disable();
 		}
-		else if (mode == "edit"){
+
+		if (values){
 			webix.promise.all ([
 				activities.waitData
 			]).then(() => {
-				if (values) {
-					values.date = webix.Date.copy(values.DueDate);
-					values.time = webix.Date.copy(values.DueDate);
-					form.setValues(values);
-				}
+				values.date = webix.Date.copy(values.DueDate);
+				values.time = webix.Date.copy(values.DueDate);
+				form.setValues(values);
 			});
 			addButton.hide();
 			updateButton.show();
 			formTemplate.define({template: "Edit activity"});
 		}
+    
+		else {
+			updateButton.hide();
+			addButton.show();
+			formTemplate.define({template: "Add activity"});
+		}
+    
 		formTemplate.refresh();
 		this.getRoot().show();
 	}

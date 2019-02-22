@@ -1,6 +1,5 @@
 import {JetView} from "webix-jet";
 import {contacts} from "models/contacts";
-import DetailedView from "./detailes.js";
 
 export default class StartView extends JetView {
 	config(){
@@ -15,7 +14,16 @@ export default class StartView extends JetView {
 									localId:"listForContacts",
 									type: {
 										height: 65,
-										template: "<div class='overall'><div class='title'>#FirstName# #LastName#</div><div class='year'>#Company#</div> </div>",
+										template: (obj) => {
+											let photo = "";
+											if (!obj.Photo) {
+												photo = "<img class='defaultPhoto'>";
+											}
+											else {
+												photo = "<img src ="+obj.Photo+" class='photo_icon'>";
+											}
+											return "<div class='list'>" + photo + "</div><div class='overall list'><div class='title list'>"+obj.FirstName + " " + obj.LastName + "</div><div class='year'>" + obj.Company + "</div></div>";
+										}
 									},
 									width: 400,
 									select: true,
@@ -26,18 +34,21 @@ export default class StartView extends JetView {
 											this.setParam("id", id, true);
 										}
 									},
+
 								},
 								{
 									view:"button",
 									localId:"addContact",
-									value: "Add contact"
+									value: "Add contact",
+									click: () => {
+										this.show("formContact");
+										this.$$("listForContacts").disable();
+									}
 								}
 							]
 						},
 						{
-							rows: [
-								DetailedView
-							]
+							$subview: true
 						}
 					]
 				}
@@ -46,12 +57,23 @@ export default class StartView extends JetView {
 	}
 	init(){
 		this.$$("listForContacts").sync(contacts);
+		const list = this.$$("listForContacts");
+		contacts.waitData.then(() => {
+			this.show("detailes");
+		});
+		webix.dp(contacts).attachEvent("onAfterInsert", function(response){
+			list.select(response.id);
+		});
+		this.on(this.app, "CloseTheFormAndShowDetails", () => {
+			this.show("detailes");
+			list.enable();
+		});
 	}
 	urlChange(){
 		contacts.waitData.then(() => {
 			const list = this.$$("listForContacts");
 			let id = this.getParam("id");
-			if (!id || !contacts.exists(id)) {
+			if (!contacts.exists(id)) {
 				id = contacts.getFirstId();
 				this.setParam("id", id, true);
 			}
