@@ -54,9 +54,9 @@ export default class FormContact extends JetView {
 											name: "StatusID",
 											options: {
 												filter:function(item, value){
-														if(item.Value.toString().toLowerCase().indexOf(value.toLowerCase())===0)
-																 return true;
-														return false;
+													if(item.Value.toString().toLowerCase().indexOf(value.toLowerCase())===0)
+														return true;
+													return false;
 												},
 												body:{
 													template: "#Value#",
