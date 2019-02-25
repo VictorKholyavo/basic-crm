@@ -75,10 +75,7 @@ export default class StartView extends JetView {
 		const list = this.$$("listForContacts");
 		list.sync(contacts);
 
-		function equals(a,b){
-			a = a.toString().toLowerCase();
-			return a.indexOf(b) !== -1;
-		}
+
 
 		contacts.waitData.then(() => {
 			this.show("detailes");
@@ -117,4 +114,9 @@ export default class StartView extends JetView {
 			list.select(id);
 		});
 	}
+}
+
+function equals(a,b){
+	a = a.toString().toLowerCase();
+	return a.indexOf(b) !== -1;
 }
