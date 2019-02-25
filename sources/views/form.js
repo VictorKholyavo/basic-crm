@@ -23,7 +23,7 @@ export default class WindowsView extends JetView {
 					invalidMessage: "Details can not be empty"
 				},
 				{
-					view: "combo",
+					view: "richselect",
 					localId: "activitytypes",
 					label: "Type",
 					labelPosition: "left",
@@ -32,7 +32,7 @@ export default class WindowsView extends JetView {
 					required:true,
 					options: {
 						body:{
-							template: "#Value#",
+							template: "<span class='fas fa-#Icon#'> #Value#</span>",
 							data: activitytypes
 						}
 					}

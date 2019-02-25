@@ -74,16 +74,19 @@ export default class StartView extends JetView {
 		contacts.filter();
 		const list = this.$$("listForContacts");
 		list.sync(contacts);
+
+		function equals(a,b){
+			a = a.toString().toLowerCase();
+			return a.indexOf(b) !== -1;
+		}
+
 		contacts.waitData.then(() => {
 			this.show("detailes");
 			this.$$("list_input").attachEvent("onTimedKeyPress",function(){
 				let value = this.getValue().toLowerCase();
 				if (!value) return contacts.filter();
 
-				function equals(a,b){
-					a = a.toString().toLowerCase();
-					return a.indexOf(b) !== -1;
-				}
+
 				contacts.filter(function(obj){
 					if (equals(obj.FirstName, value)) return true;
 					if (equals(obj.LastName, value)) return true;

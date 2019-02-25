@@ -3,7 +3,7 @@ export const activitytypes = new webix.DataCollection({
 	save: "rest->http://localhost:8096/api/v1/activitytypes/",
 	scheme: {
 		$change: function(obj){
-			obj.value = obj.Value;
+			obj.value = "<span class='fas fa-"+obj.Icon+"'></span>" + " " + obj.Value; 
 		},
 	},
 });

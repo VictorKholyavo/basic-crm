@@ -46,7 +46,7 @@ export default class FormContact extends JetView {
 											width: 300,
 										},
 										{
-											view: "combo",
+											view: "richselect",
 											localId: "contactid",
 											label: "Status",
 											labelPosition: "left",
@@ -59,7 +59,7 @@ export default class FormContact extends JetView {
 													return false;
 												},
 												body:{
-													template: "#Value#",
+													template: "<span class='fas fa-#Icon#'> #Value#</span>",
 													data: statuses
 												}
 											}

@@ -52,7 +52,7 @@ export default class DataView extends JetView{
 					select: true,
 					columns: [
 						{id:"State", sort:"string",width: 40, header: "", checkValue:"Close", uncheckValue:"Open", template:"{common.checkbox()}"},
-						{id:"TypeID", header:["Activity Type", {content:"selectFilter"}], collection: activitytypes,  sort:"string"},
+						{id:"TypeID",  header:["Activity Type", {content:"richSelectFilter", template: "#TypeID#"}],  collection: activitytypes, sort:"string", width: 130},
 						{id:"DueDate", format: webix.Date.dateToStr("%d %M %Y"), sort:"date", header:["Due Date", {content:"dateRangeFilter", inputConfig:{format:webix.Date.dateToStr("%d %M %Y")}}], width:160 },
 						{id:"Details", header:["Details", {content:"textFilter", compare:likeCompare}], sort:"string", fillspace: true},
 						{id:"ContactID", header:["Contact", {content:"selectFilter"}], collection: contacts, fillspace: true, sort:"string"},
@@ -115,25 +115,19 @@ export default class DataView extends JetView{
 
 						let tommorow = new Date;
 						tommorow.setDate(tommorow.getDate() + 1);
-						tommorow.setHours(23, 59, 59);
 
-						let sunday = new Date;
-						sunday.setHours(23, 59, 59);
+						let weekEnd = new Date((webix.Date.weekStart(today).setDate(webix.Date.weekStart(today).getDate() + 7)));
+						weekEnd.setHours(weekEnd.getHours() + 24);
 
-						let toSunday = 7 - sunday.getDay();
-						sunday.setDate(sunday.getDate() + toSunday);
-
-						let thisMonth = new Date;
-						thisMonth.setMonth(thisMonth.getMonth() + 1, 0);
-						thisMonth.setHours(23, 59, 59);
+						let nextMonth = new Date(webix.Date.monthStart(today).setMonth(webix.Date.monthStart(today).getMonth() + 1));
 
 						if (filter == 1) return value;
 						else if (filter == 2) return value == "Close";
-						else if (filter == 3) return item.DueDate < yesterday;
+						else if (filter == 3 && value == "Open") return item.DueDate < yesterday;
 						else if (filter == 4) return item.DueDate > yesterday.setHours(23, 59, 59) && item.DueDate <= today;
 						else if (filter == 5) return item.DueDate > today && item.DueDate <= tommorow;
-						else if (filter == 6) return item.DueDate >= today.setHours(0, 0, 0) && item.DueDate <= sunday;
-						else if (filter == 7) return item.DueDate >= today.setHours(0, 0, 0) && item.DueDate <= thisMonth;
+						else if (filter == 6) return item.DueDate >= webix.Date.weekStart(today).setHours(23, 59, 59) && item.DueDate < weekEnd;
+						else if (filter == 7) return item.DueDate >= webix.Date.monthStart(today) && item.DueDate < nextMonth;
 					}
 				},
 				{
