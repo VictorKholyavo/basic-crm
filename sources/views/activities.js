@@ -6,6 +6,8 @@ import {activitytypes} from "models/activitytypes";
 
 export default class DataView extends JetView{
 	config(){
+		const _ = this.app.getService("locale")._;
+
 		return {
 			rows: [
 				{
@@ -16,14 +18,32 @@ export default class DataView extends JetView{
 							view:"button",
 							type:"icon",
 							icon:"wxi-user",
-							width: 200,
-							label:"Add activity",
+							width: 300,
+							label: _("Add activity"),
 							css: {"float": "right"},
 							click:() => {
-								this.win4.showWindow("add");
+								this.win4.showWindow();
 							}
 						},
 					]
+				},
+				{
+					view: "tabbar",
+					localId: "mytabbar",
+					options: [
+						{id: 1, value: _("All")},
+						{id: 2, value: _("Completed")},
+						{id: 3, value: _("Overdue")},
+						{id: 4, value: _("Today")},
+						{id: 5, value: _("Tomorrow")},
+						{id: 6, value: _("This week")},
+						{id: 7, value: _("This mounth")},
+					],
+					on: {
+						onChange:() => {
+							this.$$("datatable").filterByAll();
+						}
+					}
 				},
 				{
 					view:"datatable",
@@ -32,7 +52,7 @@ export default class DataView extends JetView{
 					select: true,
 					columns: [
 						{id:"State", sort:"string",width: 40, header: "", checkValue:"Close", uncheckValue:"Open", template:"{common.checkbox()}"},
-						{id:"TypeID", header:["Activity Type", {content:"selectFilter"}], collection: activitytypes,  sort:"string"},
+						{id:"TypeID",  header:["Activity Type", {content:"richSelectFilter", template: "#TypeID#"}],  collection: activitytypes, sort:"string", width: 130},
 						{id:"DueDate", format: webix.Date.dateToStr("%d %M %Y"), sort:"date", header:["Due Date", {content:"dateRangeFilter", inputConfig:{format:webix.Date.dateToStr("%d %M %Y")}}], width:160 },
 						{id:"Details", header:["Details", {content:"textFilter", compare:likeCompare}], sort:"string", fillspace: true},
 						{id:"ContactID", header:["Contact", {content:"selectFilter"}], collection: contacts, fillspace: true, sort:"string"},
@@ -80,6 +100,46 @@ export default class DataView extends JetView{
 		activities.filter();
 		this.$$("datatable").sync(activities);
 		this.win4 = this.ui(WindowsView);
+		activities.waitData.then(() => {
+			this.$$("datatable").registerFilter(
+				this.$$("mytabbar"),
+				{
+					columnId: "State",
+					compare: function(value, filter, item) {
+						let today = new Date;
+						today.setHours(23, 59, 59);
+
+						let yesterday = new Date;
+						yesterday.setDate(yesterday.getDate() - 1);
+						yesterday.setHours(0, 0, 0, 0);
+
+						let tommorow = new Date;
+						tommorow.setDate(tommorow.getDate() + 1);
+
+						let weekEnd = new Date((webix.Date.weekStart(today).setDate(webix.Date.weekStart(today).getDate() + 7)));
+						weekEnd.setHours(weekEnd.getHours() + 24);
+
+						let nextMonth = new Date(webix.Date.monthStart(today).setMonth(webix.Date.monthStart(today).getMonth() + 1));
+
+						if (filter == 1) return value;
+						else if (filter == 2) return value == "Close";
+						else if (filter == 3 && value == "Open") return item.DueDate < yesterday;
+						else if (filter == 4) return item.DueDate > yesterday.setHours(23, 59, 59) && item.DueDate <= today;
+						else if (filter == 5) return item.DueDate > today && item.DueDate <= tommorow;
+						else if (filter == 6) return item.DueDate >= webix.Date.weekStart(today).setHours(23, 59, 59) && item.DueDate < weekEnd;
+						else if (filter == 7) return item.DueDate >= webix.Date.monthStart(today) && item.DueDate < nextMonth;
+					}
+				},
+				{
+					getValue:function(node){
+						return node.getValue();
+					},
+					setValue:function(node, value){
+						node.setValue(value);
+					}
+				}
+			);
+		});
 	}
 	urlChange(){
 		const datatable = this.$$("datatable");

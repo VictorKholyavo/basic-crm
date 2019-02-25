@@ -7,6 +7,8 @@ import FileTable from "./filesofContacts";
 
 export default class DetailedView extends JetView{
 	config(){
+		const _ = this.app.getService("locale")._;
+
 		return {
 			rows: [
 				{
@@ -24,7 +26,7 @@ export default class DetailedView extends JetView{
 								else {
 									photo = "<img src ="+obj.Photo+" class='photo'>";
 								}
-								return "<div class='one'><span class='nameOfContact'>" + obj.FirstName + " " + obj.LastName + "<span><span>"+photo+"</span><span>" + obj.status + "</span></div><div class='one'><span></span><span></span><span class='webix_icon fas fa-envelope'>" + obj.Email + "</span> <span class='webix_icon fab fa-skype'>"+ obj.Skype + "</span> <span class='webix_icon fas fa-tag'>" + obj.Job + "</span> <span class='webix_icon fas fa-briefcase'>" + obj.Company + "</span></div><div class='one'><span></span><span></span><span class='webix_icon far fa-calendar-alt'>" + birthday + "</span><span class='webix-icon fas fa-map-marker-alt'>" + obj.Address + "</span></div>";
+								return "<div class='one'><span class='nameOfContact'>" + obj.FirstName + " " + obj.LastName + "<span><span>"+photo+"</span><span class='fas fa-"+obj.icon+"'>"+" "+ obj.status + "</span></div><div class='one'><span></span><span></span><span class='webix_icon fas fa-envelope'>" + obj.Email + "</span> <span class='webix_icon fab fa-skype'>"+ obj.Skype + "</span> <span class='webix_icon fas fa-tag'>" + obj.Job + "</span> <span class='webix_icon fas fa-briefcase'>" + obj.Company + "</span></div><div class='one'><span></span><span></span><span class='webix_icon far fa-calendar-alt'>" + birthday + "</span><span class='webix-icon fas fa-map-marker-alt'>" + obj.Address + "</span></div>";
 							}
 						},
 						{
@@ -34,7 +36,7 @@ export default class DetailedView extends JetView{
 										{
 											view: "button",
 											value: "Delete",
-											width: 70,
+											width: 120,
 											click: () => {
 												webix.confirm(
 													{
@@ -58,14 +60,16 @@ export default class DetailedView extends JetView{
 													}
 												);
 											},
+											label: _("Delete")
 										},
 										{
 											view: "button",
 											value: "Edit",
-											width: 70,
+											width: 120,
 											click:() => {
 												this.show("formContact?mode=edit");
-											}
+											},
+											label: _("Edit")
 										},
 									]
 								},
@@ -75,10 +79,12 @@ export default class DetailedView extends JetView{
 					]
 				},
 				{
-					view:"tabview", localId:"tabs", cells:[
-						{ header:"Activities", body: ContactActivities  },
-						{ header:"Files", body: FileTable}
-					]
+					view:"tabview",
+					localId:"tabs",
+					cells:[
+						{ header:_("Activities"), body: ContactActivities },
+						{ header:_("Files"), body: FileTable }
+					],
 				}
 			]
 		};
@@ -95,11 +101,12 @@ export default class DetailedView extends JetView{
 			let template = this.$$("detailedInfo");
 			let values = webix.copy(contacts.getItem(id));
 			if (values) {
-				if (values && values.StatusID && statuses.exists(id)) {
+				if (values && values.StatusID && statuses.exists(values.StatusID)) {
+					values.icon = statuses.getItem(values.StatusID).Icon;
 					values.status = statuses.getItem(values.StatusID).Value;
 				}
 				else {
-					values.status = "Not available";
+					values.status = "Status not available";
 				}
 				template.parse(values);
 			}

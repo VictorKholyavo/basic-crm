@@ -3,6 +3,8 @@ import {files} from "models/files";
 
 export default class FileTable extends JetView{
 	config(){
+		const _ = this.app.getService("locale")._;
+
 		return {
 			rows: [
 				{
@@ -38,7 +40,7 @@ export default class FileTable extends JetView{
 				{
 					view:"uploader",
 					localId:"uploader_1",
-					value:"Upload file",
+					value: _("Upload file"),
 					upload:"models/files",
 					autosend: false,
 					on: {

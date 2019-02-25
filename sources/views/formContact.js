@@ -4,6 +4,7 @@ import {statuses} from "models/statuses";
 
 export default class FormContact extends JetView {
 	config(){
+		const _ = this.app.getService("locale")._;
 
 		return {
 			view:"form",
@@ -18,7 +19,7 @@ export default class FormContact extends JetView {
 							template: " ",
 							localId: "formTemplate",
 							css: "formTemplate",
-							height: 40
+							height: 40,
 						},
 						{
 							cols: [
@@ -45,7 +46,7 @@ export default class FormContact extends JetView {
 											width: 300,
 										},
 										{
-											view: "combo",
+											view: "richselect",
 											localId: "contactid",
 											label: "Status",
 											labelPosition: "left",
@@ -58,7 +59,7 @@ export default class FormContact extends JetView {
 													return false;
 												},
 												body:{
-													template: "#Value#",
+													template: "<span class='fas fa-#Icon#'> #Value#</span>",
 													data: statuses
 												}
 											}
@@ -150,7 +151,7 @@ export default class FormContact extends JetView {
 														{
 															view:"uploader",
 															localId:"changePhoto",
-															value:"Change Photo",
+															value: _("Change photo"),
 															autosend: false,
 															on: {
 																onBeforeFileAdd: (upload) => {
@@ -171,7 +172,7 @@ export default class FormContact extends JetView {
 														{
 															view:"button",
 															localId:"deletePhoto",
-															value: "Delete Photo",
+															value: _("Delete photo"),
 															click:() => {
 																this.$$("photo").setValues({src: " "});
 																const values = this.$$("formContact").getValues();
@@ -196,7 +197,7 @@ export default class FormContact extends JetView {
 				{
 					view:"button",
 					localId:"updateButton",
-					value: "Save",
+					value: _("Save"),
 					click:() => {
 						this.addOrSave();
 					}
@@ -204,7 +205,7 @@ export default class FormContact extends JetView {
 				{
 					view:"button",
 					localId:"addButton",
-					value: "Add",
+					value: _("Add"),
 					click: () => 	{
 						this.addOrSave();
 					}
@@ -212,7 +213,7 @@ export default class FormContact extends JetView {
 				{
 					view:"button",
 					localId:"closeButton",
-					value: "Close",
+					value: _("Close"),
 					click:() => {
 						this.app.callEvent("CloseTheFormAndShowDetails", []);
 					}
@@ -230,6 +231,7 @@ export default class FormContact extends JetView {
 
 	}
 	urlChange(){
+		const _ = this.app.getService("locale")._;
 		let id = this.getParam("id", true );
 		let mode = this.getParam("mode");
 
@@ -242,7 +244,7 @@ export default class FormContact extends JetView {
 		form.clearValidation();
 
 		if(mode == "edit") {
-			template.define({template: "Edit contact"});
+			template.define({template: _("Edit contact")});
 			addButton.hide();
 			webix.promise.all ([
 				contacts.waitData

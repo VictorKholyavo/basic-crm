@@ -5,6 +5,8 @@ import {activities} from "models/activities";
 
 export default class WindowsView extends JetView {
 	config(){
+		const _ = this.app.getService("locale")._;
+
 		const form = {
 			view:"form",
 			localId: "form",
@@ -21,7 +23,7 @@ export default class WindowsView extends JetView {
 					invalidMessage: "Details can not be empty"
 				},
 				{
-					view: "combo",
+					view: "richselect",
 					localId: "activitytypes",
 					label: "Type",
 					labelPosition: "left",
@@ -30,7 +32,7 @@ export default class WindowsView extends JetView {
 					required:true,
 					options: {
 						body:{
-							template: "#Value#",
+							template: "<span class='fas fa-#Icon#'> #Value#</span>",
 							data: activitytypes
 						}
 					}
@@ -76,21 +78,21 @@ export default class WindowsView extends JetView {
 				{
 					view:"button",
 					localId:"updateButton",
-					value: "Save",
+					value: _("Save"),
 					width: 100,
 					click:() => { this.addOrSave();}
 				},
 				{
 					view:"button",
 					localId:"addButton",
-					value: "Add",
+					value: _("Add"),
 					width: 100,
 					click: () => 	{ this.addOrSave();}
 				},
 				{
 					view:"button",
 					localId:"closeButton",
-					value: "Close",
+					value: _("Close"),
 					width: 100,
 					click:function() {
 						this.getTopParentView().hide();
@@ -126,8 +128,9 @@ export default class WindowsView extends JetView {
 			}
 		};
 	}
-  
+
 	showWindow(values, idOfContact){
+		const _ = this.app.getService("locale")._;
 		let form = this.$$("form");
 		let addButton = this.$$("addButton");
 		let updateButton = this.$$("updateButton");
@@ -148,15 +151,15 @@ export default class WindowsView extends JetView {
 			});
 			addButton.hide();
 			updateButton.show();
-			formTemplate.define({template: "Edit activity"});
+			formTemplate.define({template: _("Edit activity")});
 		}
-    
+
 		else {
 			updateButton.hide();
 			addButton.show();
-			formTemplate.define({template: "Add activity"});
+			formTemplate.define({template: _("Add activity")});
 		}
-    
+
 		formTemplate.refresh();
 		this.getRoot().show();
 	}

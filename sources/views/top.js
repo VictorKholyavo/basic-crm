@@ -4,6 +4,8 @@ import {JetView, plugins} from "webix-jet";
 
 export default class TopView extends JetView{
 	config(){
+		const _ = this.app.getService("locale")._;
+
 		const menu = {
 			view:"menu",
 			id:"top:menu",
@@ -12,17 +14,17 @@ export default class TopView extends JetView{
 			width:180, layout:"y", select:true,
 			template:"<span class='webix_icon #icon#'></span> #value# ",
 			data:[
-				{ value: "Contacts", id:"contacts", icon:"wxi-columns" },
-				{ value: "Activities",	id:"activities", icon:"wxi-pencil" },
-				{ value: "Settings", id:"settings", icon:"webix_icon fas fa-cog"}
+				{ value: _("Contacts"), id:"contacts", icon:"wxi-columns" },
+				{ value: _("Activities"),	id:"activities", icon:"wxi-pencil" },
+				{ value: _("Settings"), id:"settings", icon:"webix_icon fas fa-cog"}
 			],
 			on: {
 				onAfterSelect:function(id){
 					const header = this.$scope.$$("header");
 					header.define({template: this.getItem(id).value});
 					header.refresh();
-				}
-			}
+				},
+			},
 		};
 
 		const ui = {
@@ -33,8 +35,9 @@ export default class TopView extends JetView{
 					rows: [
 						{
 							type: "header",
-							template: "#value#",
-							localId: "header"
+							view: "template",
+							value: "#value#",
+							localId: "header",
 						},
 						{
 							css:"webix_shadow_medium",

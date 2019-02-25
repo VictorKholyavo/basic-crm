@@ -5,6 +5,8 @@ import {activitytypes} from "models/activitytypes";
 
 export default class ContactActivities extends JetView{
 	config(){
+		const _ = this.app.getService("locale")._;
+
 		return {
 			rows: [
 				{
@@ -14,7 +16,7 @@ export default class ContactActivities extends JetView{
 					select: true,
 					columns: [
 						{id:"State", sort:"string",width: 40, header: "", checkValue:"Close", uncheckValue:"Open", template:"{common.checkbox()}"},
-						{id:"TypeID", header:{content:"selectFilter"}, collection: activitytypes,  sort:"string"},
+						{id:"TypeID", header:{content:"richSelectFilter"}, collection: activitytypes,  sort:"string", width: 130},
 						{id:"DueDate", format: webix.Date.dateToStr("%d %M %Y"), sort:"date", header:{content:"dateRangeFilter", inputConfig:{format:webix.Date.dateToStr("%d %M %Y")}}, width:160 },
 						{id:"Details", header:{content:"textFilter"}, compare:likeCompare, sort:"string", fillspace: true},
 						{id:"edit", header:"", template:"<i class='far fa-edit'></i>"},
@@ -54,14 +56,13 @@ export default class ContactActivities extends JetView{
 							view:"button",
 							type:"icon",
 							icon:"wxi-user",
-							width: 200,
-							label:"Add activity",
+							width: 300,
+							label:_("Add activity"),
 							css: {"float": "right"},
 							click:() => {
-								let mode = "add";
 								let idOfContact = this.getParam("id", true);
-								this.win4.showWindow(mode, idOfContact);
-							}
+								this.win4.showWindow("", idOfContact);
+							},
 						},
 					]
 				},
